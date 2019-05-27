@@ -1,2 +1,2 @@
 ofxOSC
-ofxVideoArtInstruments
+ofxVideoArtTools
