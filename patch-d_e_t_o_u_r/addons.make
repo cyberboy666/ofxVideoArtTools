@@ -1,0 +1,4 @@
+ofxOSC
+ofxMidi
+ofxJSON
+ofxVideoArtTools
