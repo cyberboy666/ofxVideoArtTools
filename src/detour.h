@@ -34,6 +34,8 @@ public:
     vector<ofPixels> detour2;
     vector<ofPixels> detour3;
 
+    ofPixels default_frame;
+
     float normStart;
     float normEnd;
     float normPosition;

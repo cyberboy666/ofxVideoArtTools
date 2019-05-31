@@ -33,8 +33,8 @@ void videoPlayer::quitPlayer(){
             //close();
 }
 bool videoPlayer::ifLoading(){
-        if(isLoaded()){
-    if( status == "LOADING"){
+    if(isLoaded()){
+        if( status == "LOADING"){
 
     //get begin point based on direction
             //float beginPoint = start;
@@ -53,6 +53,7 @@ bool videoPlayer::ifLoading(){
                 ofLog(OF_LOG_NOTICE, "the position is " + ofToString(getPosition()) + "it should be " + ofToString(start));
                 //aPlayer.setSpeed(aSpeed);
                 //updateStatus("a", "LOADED");
+                status = "LOADED";
                 return true;
                 }
             }
@@ -72,6 +73,7 @@ bool videoPlayer::ifPlaying(){
             //isAtEndPoint = getPosition() < start || getCurrentFrame() < 5;
             //}
         if(isAtEndPoint){
+            status = "FINISHED";
             setPaused(true);
             return true;
             //updateStatus("a", "FINISHED");

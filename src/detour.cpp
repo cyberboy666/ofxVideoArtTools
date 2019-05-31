@@ -1,7 +1,7 @@
 #include "detour.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){
+void detour::setup(){
 
 	ofEnableAlphaBlending();
 
@@ -50,15 +50,15 @@ ofPixels detour::getFrame(){
         detour_position_part = subsetModFloat(detour_position_part + detour_speed);
         detour_position = (int)floor(detour_position_part);
     }
-    if(is_delay){
-        int current_size = detours[current_detour].size();
-        detour_position = current_size - 1;
-        this_frame = detours[current_detour][detour_position];
-        if(current_size > delay_size){
-            detours[current_detour].erase(detours[current_detour].begin()+delay_size,detours[current_detour].begin()+current_size);
-        }
-        detours[current_detour].insert(detours[current_detour].begin(),in_frame);
-    }
+    // if(is_delay){ // need to refactor delay lolgic later
+    //     int current_size = detours[current_detour].size();
+    //     detour_position = current_size - 1;
+    //     this_frame = detours[current_detour][detour_position];
+    //     if(current_size > delay_size){
+    //         detours[current_detour].erase(detours[current_detour].begin()+delay_size,detours[current_detour].begin()+current_size);
+    //     }
+    //     detours[current_detour].insert(detours[current_detour].begin(),in_frame);
+    // }
 
     return this_frame;
 }

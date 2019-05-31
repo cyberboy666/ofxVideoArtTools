@@ -10,8 +10,12 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
+	void keyPressed(int key);
     ofFbo fbo;
     incur userInput;
 
+	void runAction(string action, string amount);
+
+	void exit(string input);
 
 };

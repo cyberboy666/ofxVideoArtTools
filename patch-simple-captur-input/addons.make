@@ -1,4 +1,4 @@
-ofxOSC
+ofxOsc
 ofxMidi
 ofxJSON
 ofxVideoArtTools

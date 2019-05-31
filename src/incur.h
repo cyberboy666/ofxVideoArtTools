@@ -10,29 +10,31 @@
 #include "TerminalListener.h"
 #endif
 
-class incur { // removed this also: public ofxMidiListener{ // removed this for now : public KeyListener,
+class incur : public ofxMidiListener { // removed this for now : public KeyListener,
 
     public:
-        void setup(string mapPath);
+        //incur();
+        void setupThis(string mapPath);
         void exit();
 
         bool midiListening();
         bool oscListening();
         bool analogListening();
-        vector<tuple<string, string>> getActions();
+        vector<vector<string>> getActions();
 
     // key listening
     
     bool isKeyListening;
-    vector<tuple<string, string>> keyActions;
+    vector<vector<string>> keyActions;
+    
     void onKeyPress(int e); // removed this for now KeyListenerEventData& e);
 
 
     // midi listening 
 
     bool isMidiListening;
-    vector<tuple<string, string>> midiActions;
-	void onMidiMessage(ofxMidiMessage& eventArgs);
+    vector<vector<string>> midiActions;
+    void newMidiMessage(ofxMidiMessage& eventArgs);
 	ofxMidiIn midiIn;
 	std::vector<ofxMidiMessage> midiMessages;
 	std::size_t maxMessages = 10; //< max number of messages to keep track of
@@ -41,7 +43,7 @@ class incur { // removed this also: public ofxMidiListener{ // removed this for 
 
     ofxOscReceiver receiver;
     bool isOscListening;
-    vector<tuple<string,string>> checkForOsc;
+    vector<vector<string>> checkForOsc();
     ofxJSONElement result;
 
     // analog listening (not implemeted yet)
