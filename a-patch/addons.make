@@ -1,3 +1,0 @@
-ofxOSC
-ofxXmlSettings
-ofxVideoArtInstruments

@@ -1,6 +1,6 @@
-#include "videoPlayer.h"
+#include "recurVideoPlayer.h"
 
-void videoPlayer::setup(string nameValue){
+void recurVideoPlayer::setup(string nameValue){
     name = nameValue;
     status = "EMPTY";
     alpha = 255;
@@ -9,30 +9,30 @@ void videoPlayer::setup(string nameValue){
     speed = 1;
 }
 
-void videoPlayer::loadPlayer(string pathValue, float startValue, float endValue, float speedValue){
+void recurVideoPlayer::loadPlayer(string pathValue, float startValue, float endValue, float speedValue){
     loadAsync(pathValue); 
     start = startValue;
     end = endValue;
     speed = speedValue;
 }
-void videoPlayer::playPlayer(){
+void recurVideoPlayer::playPlayer(){
         setPaused(false);
         alpha = 255;    
 }
-void videoPlayer::pausePlayer(){
+void recurVideoPlayer::pausePlayer(){
         setPaused(true);
 }
-void videoPlayer::setSpeedTo(float speedValue){
+void recurVideoPlayer::setSpeedTo(float speedValue){
         if(speedValue == 0){ speed = 0.001;}
         else{speed = speedValue;}
         setSpeed(speed);
         ofLog(OF_LOG_NOTICE, "the player speed is " + ofToString(getSpeed()) + "but it should be " + ofToString(speed));   
 }
-void videoPlayer::quitPlayer(){
+void recurVideoPlayer::quitPlayer(){
             //stop();
             //close();
 }
-bool videoPlayer::ifLoading(){
+bool recurVideoPlayer::ifLoading(){
     if(isLoaded()){
         if( status == "LOADING"){
 
@@ -60,7 +60,7 @@ bool videoPlayer::ifLoading(){
         }
 return false;
 }
-bool videoPlayer::ifPlaying(){
+bool recurVideoPlayer::ifPlaying(){
     if(status == "PLAYING"){
         //get end point based on direction
         //if(getSpeed() != speed ){setSpeed(speed);}

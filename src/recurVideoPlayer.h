@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "ofVideoPlayer.h"
 
-class videoPlayer : public ofVideoPlayer {
+class recurVideoPlayer : public ofVideoPlayer {
 
     public:
         void setup(string nameValue);

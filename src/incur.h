@@ -2,11 +2,10 @@
 
 #include "ofMain.h"
 #include "ofxMidi.h"
-#include "ofxOSC.h"
+#include "ofxOsc.h"
 #include "ofxJSON.h"
 #include "ofBaseApp.h"
 #ifdef TARGET_RASPBERRY_PI
-#include "ofxGPIO.h"
 #include "TerminalListener.h"
 #endif
 

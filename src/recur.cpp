@@ -27,7 +27,7 @@ void recur::update(){
 
 ofTexture recur::getSeamlessPlayerTexture(){
     if(nowPlaying == "a"){return aPlayer.getTexture();}
-    else if(nowPlaying == "b"){return bPlayer.getTexture();}
+    else {return bPlayer.getTexture();} //if(nowPlaying == "b")
 }
 
 void recur::SeamlessPlayerDraw(){

@@ -1,16 +1,16 @@
 #pragma once
 
-#include "videoPlayer.h"
+#include "recurVideoPlayer.h"
 
 class recur {
     public:
         void setup(string video);
         void update();
-        void drawPlayerIfPlayingOrPaused(videoPlayer player);
+        //void drawPlayerIfPlayingOrPaused(recurVideoPlayer player);
 
 
-        videoPlayer 		aPlayer;
-        videoPlayer 		bPlayer;
+        recurVideoPlayer 		aPlayer;
+        recurVideoPlayer 		bPlayer;
 
         void startSeamless();
         void updateSeamless();

@@ -4,22 +4,24 @@
 void ofApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(false);
-    ofHideCursor();    
+    //ofHideCursor();    
         
-    ofSetFullscreen(1);
+    //ofSetFullscreen(1);
     fbo.allocate(ofGetScreenWidth(), ofGetScreenHeight());
 
     videoInput.setup("vidGrabber");
+    //videoInput.setup("piCamera");
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    ofLog() << videoInput.isReady();
     videoInput.update();
     }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    videoInput.draw();
-    }
+        videoInput.draw(0,0);
+        }
 
 //--------------------------------------------------------------

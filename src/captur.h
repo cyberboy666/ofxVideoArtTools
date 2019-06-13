@@ -10,15 +10,16 @@ class captur{
     public:
         void setup(string type);
         void update();
-        void draw(int x=0, int y=0);
+        void draw(int x =0, int y=0);
+        void draw(int x, int y,int w,int h);
         ofPixels getPixels();
         ofTexture getTexture();
         bool isReady();
         void close();
-
+        bool isFrameNew();
         // for now i will not implement recording here since in some cases recording may be seperate from capturing
-        // void startRecording();
-        // void stopRecording();
+        void startRecording();
+        void stopRecording();
 
         string grabberType;
         int width, height;
@@ -26,6 +27,8 @@ class captur{
 
         ofVideoGrabber vidGrabber;
         #ifdef TARGET_RASPBERRY_PI
-        ofxOMXVideoGrabber vidGrabber;
+        ofxOMXVideoGrabber omxVidGrabber;
+        ofxOMXCameraSettings omxCameraSettings;
+        void setOmxCameraSettings(string captureType);
         #endif
 };
