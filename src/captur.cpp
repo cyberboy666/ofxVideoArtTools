@@ -18,6 +18,7 @@ void captur::setup(string givenType){
         vidGrabber.setDeviceID(0);
         vidGrabber.setDesiredFrameRate(framerate);
         vidGrabber.initGrabber(width, height);
+        // vidGrabber.setPixelFormat(GL_RGBA);
     }
     else if(grabberType == "omxGrabber"){
         #ifdef TARGET_RASPBERRY_PI

@@ -30,33 +30,14 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-vec4 mixLuma0(vec4 texColour0,vec4 texColour1) {
-    vec4 colour;    
-    vec3 hsvTexColour0 = rgb2hsv(texColour0.rgb);
-
-    if(hsvTexColour0.z > cos(u_time*0.1)){colour = texColour0;}
-    else {colour = texColour1;}
-    return colour;
-}
-
-vec4 mixVeritcalWipe(vec4 texColour0, vec4 texColour1) {
-    vec4 colour;    
-
-    if(v_texcoord.x > u_x0 * u_resolution.x){colour = texColour0;}
-    else {colour = texColour1;}
-    return colour;
-}
-
 void main() {
 
     vec2 pos = v_texcoord;
 
     vec4 texColour0 = texture(u_tex0, v_texcoord);
-    vec4 texColour1 = texture(u_tex1, v_texcoord);
-    //vec4 texColour0 = zoom(u_tex0, v_texcoord);
     vec4 colour;
-    // colour = texColour0;
-    colour = mixVeritcalWipe(texColour0, texColour1);
+    
+    colour = texColour0
 
     outputColour = colour; 
 

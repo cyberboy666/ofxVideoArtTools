@@ -6,7 +6,7 @@ void conjur::setup(){
     shaderParams = {0, 0, 0, 0};
     paramNum = 0;
 
-    fbo.allocate(ofGetWidth(), ofGetHeight());
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
     fbo.begin();
         ofClear(0, 0, 0, 0);
     fbo.end();

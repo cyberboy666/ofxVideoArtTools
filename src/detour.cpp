@@ -17,7 +17,7 @@ void detour::setup(){
     memory_full = false;
     sample_resolution = 0;
     sample_speed = 1;
-    mix_position = 0.0;
+    mix_position = 0.5;
     mix_selection = 0.0;
 
     showInfo = false;
@@ -32,8 +32,8 @@ void detour::setup(){
     write_index = 0;
 
     ofImage img;
-    img.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR_ALPHA);
-    img.setColor(ofColor::red);
+    img.allocate(ofGetWidth(), ofGetHeight(), OF_IMAGE_COLOR);
+    img.setColor(ofColor::blue);
     img.update();
     default_frame = img.getPixels();
 
@@ -123,5 +123,28 @@ float detour::subsetModFloat(float amount){
     float x = amount - (float)detour_start;
     float y = (float)getEndFrame() - (float)detour_start;
     return x - y*floor(x/y) + (float)detour_start;
+}
+
+ void detour::printState(){
+    stringstream info;
+	info << "APP FPS: " << ofGetFrameRate() << "\n";
+	info << "current_detour: " << current_detour << "\n";
+    info << "is_playing: " << is_playing << "\n";
+    info << "is_recording: " << is_recording << "\n";
+    info << "record_loop: " << record_loop << "\n";
+    info << "detour_position: " << detour_position << "\n";
+    info << "detour_size: " << detours[current_detour].size() << "\n";
+    info << "detour_speed: " << detour_speed << "\n";
+    info << "detour_start: " << detour_start << "\n";
+    info << "detour_end: " << detour_end << "\n";
+    info << "memory_full: " << memory_full << "\n";
+    info << "mix_position: " << mix_position << "\n";
+    //info << "sample_resolution: " << sample_resolution << "\n";
+    //info << "sample_speed: " << sample_speed << "\n";
+    info << "is_delay: " << is_delay << "\n";
+    info << "delay_size: " << delay_size << "\n";
+
+	//info <<	filterCollection.filterList << "\n";
+    ofDrawBitmapStringHighlight(info.str(), 50, 50, ofColor::black, ofColor::yellow);
 }
 

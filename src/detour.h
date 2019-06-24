@@ -22,6 +22,7 @@ public:
     void setEnd(float value);
     void setPosition(float value);
     void setSpeed(float value);
+    void printState();
 
     int getEndFrame();
     int subsetMod(int amount);

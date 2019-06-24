@@ -1,5 +1,4 @@
 ofxOsc
-ofxOMXCamera
 ofxXmlSettings
 ofxVideoArtTools
 

@@ -6,6 +6,7 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
 
     captur.setup("vidGrabber");
+    ofSetFrameRate(captur.framerate);
     // incur.setup("actionMap.json");
     detour.setup();
 
@@ -20,11 +21,11 @@ void ofApp::setup(){
     mixConjur.loadShader(shaderPath + "mixShader");
     // effectConjur.setup();
     // effectConjur.loadShader(shaderPath + "effectShader");
-    mixConjur.isActive = false;
-    in_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
-    detour_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    // mixConjur.isActive = false;
+    in_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
+    detour_texture.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
     
-    out_fbo.allocate(ofGetWidth(), ofGetHeight());
+    out_fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
 
 }
 
@@ -35,11 +36,11 @@ void ofApp::update(){
     in_frame.resize(ofGetWidth(), ofGetHeight());
     detour_frame = detour.getFrame();
 
-    in_texture.loadData(in_frame.getData(), ofGetWidth(), ofGetHeight(), GL_RGBA);
-    detour_texture.loadData(detour_frame.getData(), ofGetWidth(), ofGetHeight(), GL_RGBA);
+    in_texture.loadData(in_frame.getData(), in_frame.getWidth(), in_frame.getHeight(), GL_RGB);
+    detour_texture.loadData(detour_frame.getData(), detour_frame.getWidth(), detour_frame.getHeight(), GL_RGB);
 
     vector<ofTexture> mixInput = {in_texture, detour_texture};
-    //out_fbo = mixConjur.apply(mixInput);
+    out_fbo = mixConjur.apply(mixInput);
     
     // ofTexture mix_texture = mix_fbo.getTexture();
     // <ofTexture> effectInput = {mix_texture};
@@ -49,18 +50,19 @@ void ofApp::update(){
         out_fbo.readToPixels(out_frame);
         detour.addFrame(out_frame); 
         }  
-    }   
 
         // vector<tuple<string, string>> actionsList = incur.getActions();
         // for( int i = 0; i < actionsList.size(); i++){
         //     ofLog() << "action is " << get<0>(actionsList[i]) << "value is " << get<1>(actionsList[i]);
         // }
+}
 
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-        // out_fbo.draw(0, 0);
-        in_texture.draw(0,0,ofGetWidth(), ofGetHeight() );
+        out_fbo.draw(0, 0);
+        //in_texture.draw(0,0,ofGetWidth(), ofGetHeight() );
+        detour.printState();
     }
 
 //--------------------------------------------------------------
