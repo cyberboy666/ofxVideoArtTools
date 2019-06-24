@@ -30,17 +30,34 @@ vec3 hsv2rgb(vec3 c)
     return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
 }
 
-void main() {
+void main(){
 
-    vec2 pos = v_texcoord;
+vec2 pos = v_texcoord;
+vec4 color = texture(u_tex0, pos);
 
-    vec4 texColour0 = texture(u_tex0, v_texcoord);
-    vec4 colour;
-    
-    colour = texColour0
+vec3 hsv = rgb2hsv(color.rgb);
+hsv.x += u_x0 - 0.5;
+hsv.y += u_x1 - 0.5;
+hsv.z += u_x2 - 0.5;
+//hsv.x += -0.2;
+vec3 rgb = hsv2rgb(hsv.xyz);
 
-    outputColour = colour; 
+
+outputColour = vec4(rgb, color.a);
 
 }
+
+// void main() {
+
+//     vec2 pos = v_texcoord;
+
+//     vec4 texColour0 = texture(u_tex0, v_texcoord);
+//     vec4 colour;
+    
+//     colour = texColour0
+
+//     outputColour = colour; 
+
+// }
 
 

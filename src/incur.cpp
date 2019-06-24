@@ -49,9 +49,6 @@ vector<vector<string>> incur::getActions(){
     return actionsList;
 }
 
-// void ofBaseApp::keyPressed(int key){
-//     onKeyPress(key);
-// }
 
 void incur::onKeyPress(int e)// removed this for now KeyListenerEventData& e)
 {

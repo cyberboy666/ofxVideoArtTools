@@ -21,7 +21,7 @@
     ],
     "KEY" : [
         ["q", "exit"],
-        ["a", "toggleDelayMode" ],
+        ["w", "togglePlay" ],
         ["z", "increaseDelayFrame"]
     ]
 }
