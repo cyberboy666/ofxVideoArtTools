@@ -4,6 +4,7 @@
 #ifdef TARGET_RASPBERRY_PI
 #include "ofxOMXVideoGrabber.h"
 #endif
+#include "ofxVideoRecorder.h"
 
 class captur{
 
@@ -21,7 +22,12 @@ class captur{
         void startRecording();
         void stopRecording();
 
+        ofxVideoRecorder    vidRecorder;
+        bool isRecording;
+        string recordingPath;
+
         string grabberType;
+        string recorderType;
         int width, height;
         float framerate;
 

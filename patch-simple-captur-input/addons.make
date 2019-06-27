@@ -1,7 +1,7 @@
 ofxOsc
 ofxXmlSettings
 ofxVideoArtTools
-
+ofxVideoRecorder
 ofxMidi
 ofxJSON
-
+ofxPoco

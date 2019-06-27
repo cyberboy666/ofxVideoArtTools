@@ -12,5 +12,5 @@ class ofApp : public ofBaseApp{
     ofFbo fbo;
     captur videoInput;
 
-
+void keyPressed  (int key);
 };

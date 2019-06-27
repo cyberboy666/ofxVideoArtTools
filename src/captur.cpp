@@ -6,6 +6,10 @@ void captur::setup(string givenType){
     height = 480;
     framerate = 30;
 
+    recorderType = "VideoRecorder";
+    recordingPath = "";
+    isRecording = false;
+
     // convert the capture type to a grabber type
     if(givenType == "piCamera" || givenType == "piCaptureSd1"){ 
         grabberType = "omxGrabber"; 
@@ -26,6 +30,11 @@ void captur::setup(string givenType){
         omxVidGrabber.setup(omxCameraSettings);
         #endif
     }
+    if(grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
+        vidRecorder.setVideoCodec("mpeg4");
+        vidRecorder.setVideoBitrate("800k");
+    }
+    
 }
 
 #ifdef TARGET_RASPBERRY_PI
@@ -52,6 +61,15 @@ void captur::setOmxCameraSettings(string captureType){
 void captur::update(){
     if (grabberType == "vidGrabber"){
         vidGrabber.update();
+        if(vidGrabber.isFrameNew()){
+            if(isRecording && recorderType == "VideoRecorder"){
+                bool success = vidRecorder.addFrame(vidGrabber.getPixels());
+                if (!success) {
+                    ofLogWarning("This frame was not added!");
+                }
+            }
+        }
+        
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "omxGrabber"){
@@ -127,10 +145,16 @@ bool captur::isFrameNew(){
 }
 
 void captur::startRecording(){
-    if (grabberType == "vidGrabber"){
+    isRecording = true;
+    if (grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
+        vidRecorder.setup("test_video"+ofGetTimestampString()+".mov", width, height, framerate); // no audio
+        vidRecorder.start();
         //nothing yet
     }
     #ifdef TARGET_RASPBERRY_PI
+    else if(grabberType == "vidGrabber" && recorderType == "omxRecorder"){
+        // do omx stuff here maybe
+    }
     else if(grabberType == "omxGrabber"){
         omxVidGrabber.startRecording();
     }
@@ -138,10 +162,14 @@ void captur::startRecording(){
 }
 
 void captur::stopRecording(){
-    if (grabberType == "vidGrabber"){
+    isRecording = false;
+    if (grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
         //nothing yet
     }
     #ifdef TARGET_RASPBERRY_PI
+    else if(grabberType == "vidGrabber" && recorderType == "omxRecorder"){
+        // do omx stuff here maybe
+    }
     else if(grabberType == "omxGrabber"){
         omxVidGrabber.stopRecording();
     }
