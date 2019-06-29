@@ -1,6 +1,10 @@
 #include "incur.h"
 
 void incur::setupThis(string mapPath){
+    #ifdef TARGET_RASPBERRY_PI
+    consoleListener.setup(this);
+    #endif
+    
     isKeyListening = true;
     keyActions = {};
     isMidiListening = false;
@@ -101,6 +105,15 @@ vector<vector<string>> incur::checkForOsc(){
     }
     return oscActions;
 }
+
+#ifdef TARGET_RASPBERRY_PI
+//this is not working yet not sure why ...
+void incur::onCharacterReceived(KeyListenerEventData& e){
+    ofLog() << "im pressed";
+    onKeyPress((int)e.character);
+}
+#endif
+
 
 void incur::exit(){
     midiIn.closePort();

@@ -21,9 +21,10 @@ class captur{
         // for now i will not implement recording here since in some cases recording may be seperate from capturing
         void startRecording();
         void stopRecording();
+        bool isRecording();
 
         ofxVideoRecorder    vidRecorder;
-        bool isRecording;
+        bool isRecordingOn;
         string recordingPath;
 
         string grabberType;

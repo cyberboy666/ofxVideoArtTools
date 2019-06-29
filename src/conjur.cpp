@@ -16,6 +16,10 @@ void conjur::loadShader(string shaderPath){
     shader.load(shaderPath);
 }
 
+void conjur::loadShaderFiles(string shaderPathFrag, string shaderPathVert){
+    shader.load(shaderPathFrag, shaderPathVert);
+}
+
 ofFbo conjur::apply(vector<ofTexture> textures){
 
     if(isActive){

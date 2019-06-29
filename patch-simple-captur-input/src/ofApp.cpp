@@ -4,6 +4,7 @@
 void ofApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(false);
+    consoleListener.setup(this);
     //ofHideCursor();    
     ofSetFrameRate(60);
     ofSetLogLevel(OF_LOG_VERBOSE);
@@ -37,3 +38,11 @@ void ofApp::keyPressed (int key){
     }
 
 }
+
+#ifdef TARGET_RASPBERRY_PI
+void ofApp::onCharacterReceived(KeyListenerEventData& e){
+    ofLog() << "im pressed";
+    keyPressed((int)e.character);
+}
+#endif
+

@@ -7,8 +7,8 @@ void captur::setup(string givenType){
     framerate = 30;
 
     recorderType = "VideoRecorder";
-    recordingPath = "";
-    isRecording = false;
+    recordingPath = "/home/pi/Videos/raw.h264";
+    isRecordingOn = false;
 
     // convert the capture type to a grabber type
     if(givenType == "piCamera" || givenType == "piCaptureSd1"){ 
@@ -45,7 +45,7 @@ void captur::setOmxCameraSettings(string captureType){
 	omxCameraSettings.framerate = framerate; //25;
 	omxCameraSettings.enableTexture = true;
 
-    omxCameraSettings.recordingFilePath = "/home/pi/Videos/raw.h264";
+    omxCameraSettings.recordingFilePath = recordingPath;
 
     if(captureType == "piCaptureSd1"){
         omxCameraSettings.sensorMode = 7;
@@ -62,7 +62,7 @@ void captur::update(){
     if (grabberType == "vidGrabber"){
         vidGrabber.update();
         if(vidGrabber.isFrameNew()){
-            if(isRecording && recorderType == "VideoRecorder"){
+            if(isRecordingOn && recorderType == "VideoRecorder"){
                 bool success = vidRecorder.addFrame(vidGrabber.getPixels());
                 if (!success) {
                     ofLogWarning("This frame was not added!");
@@ -145,9 +145,10 @@ bool captur::isFrameNew(){
 }
 
 void captur::startRecording(){
-    isRecording = true;
+    isRecordingOn = true;
     if (grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
-        vidRecorder.setup("test_video"+ofGetTimestampString()+".mov", width, height, framerate); // no audio
+        ofLog() << "starting usb recording !!!!!!!!!!!!!!!!!!!!!!";
+        vidRecorder.setup("/home/pi/Videos/raw.mp4", width, height, framerate); // no audio
         vidRecorder.start();
         //nothing yet
     }
@@ -162,9 +163,11 @@ void captur::startRecording(){
 }
 
 void captur::stopRecording(){
-    isRecording = false;
+    isRecordingOn = false;
     if (grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
+        ofLog() << "stop usb recording !!!!!!!!!!!!!!!!!!!!!!";
         //nothing yet
+        vidRecorder.close();
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "vidGrabber" && recorderType == "omxRecorder"){
@@ -174,6 +177,19 @@ void captur::stopRecording(){
         omxVidGrabber.stopRecording();
     }
     #endif
+}
+
+bool captur::isRecording(){
+    if (grabberType == "vidGrabber"){
+        //nothing yet
+        return false;
+    }
+    #ifdef TARGET_RASPBERRY_PI
+    else if(grabberType == "omxGrabber"){
+        return omxVidGrabber.isRecording();
+    }
+    #endif
+    else{ return false;}
 }
 
 void captur::close(){

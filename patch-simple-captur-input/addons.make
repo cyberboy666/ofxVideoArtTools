@@ -5,3 +5,5 @@ ofxVideoRecorder
 ofxMidi
 ofxJSON
 ofxPoco
+
+ofxOMXCamera

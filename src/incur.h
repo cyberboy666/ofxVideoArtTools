@@ -9,8 +9,11 @@
 #include "TerminalListener.h"
 #endif
 
-class incur : public ofxMidiListener { // removed this for now : public KeyListener,
-
+#ifdef TARGET_RASPBERRY_PI
+class incur : public ofxMidiListener, public KeyListener {
+#else
+class incur : public ofxMidiListener {
+#endif
     public:
         //incur();
         void setupThis(string mapPath);
@@ -22,7 +25,10 @@ class incur : public ofxMidiListener { // removed this for now : public KeyListe
         vector<vector<string>> getActions();
 
     // key listening
-    
+    #ifdef TARGET_RASPBERRY_PI
+    TerminalListener consoleListener;
+    void onCharacterReceived(KeyListenerEventData& e);
+    #endif
     bool isKeyListening;
     vector<vector<string>> keyActions;
     
