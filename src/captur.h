@@ -25,6 +25,7 @@ class captur{
 
         ofxVideoRecorder    vidRecorder;
         bool isRecordingOn;
+        bool isRecordingFinished;
         string recordingPath;
 
         string grabberType;
@@ -33,6 +34,7 @@ class captur{
         float framerate;
 
         ofVideoGrabber vidGrabber;
+        void recordingComplete(ofxVideoRecorderOutputFileCompleteEventArgs& args);
         #ifdef TARGET_RASPBERRY_PI
         ofxOMXVideoGrabber omxVidGrabber;
         ofxOMXCameraSettings omxCameraSettings;

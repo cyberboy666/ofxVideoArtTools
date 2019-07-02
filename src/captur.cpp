@@ -9,6 +9,7 @@ void captur::setup(string givenType){
     recorderType = "VideoRecorder";
     recordingPath = "/home/pi/Videos/raw.h264";
     isRecordingOn = false;
+    isRecordingFinished = true;
 
     // convert the capture type to a grabber type
     if(givenType == "piCamera" || givenType == "piCaptureSd1"){ 
@@ -33,8 +34,14 @@ void captur::setup(string givenType){
     if(grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
         vidRecorder.setVideoCodec("mpeg4");
         vidRecorder.setVideoBitrate("800k");
+        ofAddListener(vidRecorder.outputFileCompleteEvent, this, &captur::recordingComplete);
     }
     
+}
+
+void captur::recordingComplete(ofxVideoRecorderOutputFileCompleteEventArgs& args){
+    ofLog() << "recording compete !!!!!!!!!!!!!!!!!!!";
+    isRecordingFinished = true;
 }
 
 #ifdef TARGET_RASPBERRY_PI
@@ -168,6 +175,7 @@ void captur::stopRecording(){
         ofLog() << "stop usb recording !!!!!!!!!!!!!!!!!!!!!!";
         //nothing yet
         vidRecorder.close();
+        isRecordingFinished = false; // let the callback turn  this on
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "vidGrabber" && recorderType == "omxRecorder"){
@@ -182,7 +190,7 @@ void captur::stopRecording(){
 bool captur::isRecording(){
     if (grabberType == "vidGrabber"){
         //nothing yet
-        return false;
+        return isRecordingOn || !isRecordingFinished;
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "omxGrabber"){
