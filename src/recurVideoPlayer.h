@@ -2,11 +2,20 @@
 
 #include "ofMain.h"
 #include "ofVideoPlayer.h"
+#ifdef TARGET_RASPBERRY_PI
+#include "ofxOMXPlayer.h"
+#endif
 
-class recurVideoPlayer : public ofVideoPlayer {
+class recurVideoPlayer{
 
     public:
-        void setup(string nameValue);
+        ofVideoPlayer ofPlayer;
+        #ifdef TARGET_RASPBERRY_PI
+        ofxOMXPlayerSettings omxSettings;
+        ofxOMXPlayer omxPlayer;
+        #endif  
+
+        void setup(string playerType, string nameValue);
         void loadPlayer(string path, float start, float end, float speed);
         void playPlayer();
         void pausePlayer();
@@ -15,6 +24,17 @@ class recurVideoPlayer : public ofVideoPlayer {
         bool ifLoading();
         bool ifPlaying();
 
+        float getPosition();
+        void setPosition(float pos);
+        int getCurrentFrame();
+        int getTotalNumFrames();
+        void draw(int x, int y, int w, int h);
+        ofTexture getTexture();
+        void update();
+        bool isLoaded();
+
+        
+        string type;
         int alpha;
         float start;
         float end;
