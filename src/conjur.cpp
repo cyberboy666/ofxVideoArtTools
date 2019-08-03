@@ -13,6 +13,7 @@ void conjur::setup(){
 }
 
 void conjur::loadShader(string shaderPath){
+    //this method isnt used ??
     shader.load(shaderPath);
 }
 
