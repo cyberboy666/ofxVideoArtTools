@@ -2,7 +2,7 @@
 
 void recurVideoPlayer::setup(string playerType, string nameValue){
     type = playerType;
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     omxPlayer.setup(omxSettings);
     #endif
@@ -19,7 +19,7 @@ void recurVideoPlayer::setup(string playerType, string nameValue){
 }
 
 void recurVideoPlayer::loadPlayer(string pathValue, float startValue, float endValue, float speedValue){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     ofLog() << "loaded omxplayer";
     omxPlayer.loadMovie(pathValue); 
@@ -34,7 +34,7 @@ void recurVideoPlayer::loadPlayer(string pathValue, float startValue, float endV
     speed = speedValue;
 }
 void recurVideoPlayer::playPlayer(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     omxPlayer.setPaused(false);
     #endif
@@ -45,7 +45,7 @@ void recurVideoPlayer::playPlayer(){
     alpha = 255;    
 }
 void recurVideoPlayer::pausePlayer(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     omxPlayer.setPaused(true);
     #endif
@@ -58,7 +58,7 @@ void recurVideoPlayer::pausePlayer(){
 void recurVideoPlayer::setSpeedTo(float speedValue){
     if(speedValue == 0){ speed = 0.001;}
     else{speed = speedValue;}
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     //omxPlayer.setSpeed(speed);
     #endif
@@ -127,7 +127,7 @@ return false;
 }
 
 float recurVideoPlayer::getPosition(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     float position = (float)(omxPlayer.getCurrentFrame()) / (float)(omxPlayer.getTotalNumFrames());
     //ofLog() << "position " << ofToString(position) << "media time " << omxPlayer.getMediaTime() / omxPlayer.getDurationInSeconds();
@@ -142,7 +142,7 @@ float recurVideoPlayer::getPosition(){
 }
 
 int recurVideoPlayer::getCurrentFrame(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     return omxPlayer.getCurrentFrame();
     #else
@@ -155,7 +155,7 @@ int recurVideoPlayer::getCurrentFrame(){
 }
 
 int recurVideoPlayer::getTotalNumFrames(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     return omxPlayer.getTotalNumFrames();
     #else
@@ -169,7 +169,7 @@ int recurVideoPlayer::getTotalNumFrames(){
 
 
 void recurVideoPlayer::setPosition(float pos){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     int frame = (int)(pos * (float)(omxPlayer.getTotalNumFrames()));
     ofLog() << "seeking to frame" << frame;
@@ -182,7 +182,7 @@ void recurVideoPlayer::setPosition(float pos){
 }
 
 void recurVideoPlayer::draw(int x, int y, int w, int h){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     omxPlayer.draw( x, y, w, h);
     #endif
@@ -193,7 +193,7 @@ void recurVideoPlayer::draw(int x, int y, int w, int h){
 } 
 
 ofTexture recurVideoPlayer::getTexture(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     return omxPlayer.getTextureReference();
     #else
@@ -206,7 +206,7 @@ ofTexture recurVideoPlayer::getTexture(){
 }
 
 void recurVideoPlayer::update(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     //omxPlayer.update();
     #endif
@@ -217,7 +217,7 @@ void recurVideoPlayer::update(){
 } 
 
 bool recurVideoPlayer::isLoaded(){
-    if(type == "omxPlayer"){
+    if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
     return true;//omxPlayer.update();
     #else

@@ -18,7 +18,7 @@ class captur{
         bool isReady();
         void close();
         bool isFrameNew();
-        // for now i will not implement recording here since in some cases recording may be seperate from capturing
+
         void startRecording();
         void stopRecording();
         bool isRecording();
