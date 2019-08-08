@@ -9,7 +9,7 @@
 class captur{
 
     public:
-        void setup(string type);
+        void setup(string givenType, int w, int h, int fr);
         void update();
         void draw(int x =0, int y=0);
         void draw(int x, int y,int w,int h);

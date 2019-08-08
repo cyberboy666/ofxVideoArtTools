@@ -1,10 +1,10 @@
 #include "captur.h"
 
-void captur::setup(string givenType){
+void captur::setup(string givenType, int w, int h, int fr){
     // hardcode the captur resolution and framerate for now
-    width = 640;
-    height = 480;
-    framerate = 30;
+    width = w; //640;
+    height = h; //480;
+    framerate = fr;//30;
 
     recorderType = "VideoRecorder";
     recordingPath = "/home/pi/Videos/raw.h264";
@@ -51,6 +51,7 @@ void captur::setOmxCameraSettings(string captureType){
     omxCameraSettings.sensorHeight = height; //fbo.getHeight();
 	omxCameraSettings.framerate = framerate; //25;
 	omxCameraSettings.enableTexture = true;
+    omxCameraSettings.enablePixels = true;
 
     omxCameraSettings.recordingFilePath = recordingPath;
 
@@ -102,7 +103,8 @@ void captur::draw(int x, int y, int w, int h){
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "omxGrabber"){
-        omxVidGrabber.draw(x,y);
+        //omxVidGrabber.draw(x,y);
+        omxVidGrabber.getTextureReference().draw(x, y, w, h);
     }
     #endif
 }
@@ -129,6 +131,30 @@ ofTexture captur::getTexture(){
     #endif
 } 
 
+/*
+// this is not being used - trying something but in the end decided not to...
+ofTexture captur::getTextureAndResize(int width, int height){
+    ofPixels resized_pixels;
+
+    if (grabberType == "vidGrabber"){
+        resized_pixels = vidGrabber.getPixels();
+    }
+    #ifdef TARGET_RASPBERRY_PI
+    else{ // if(grabberType == "omxGrabber"){
+        resized_pixels = omxVidGrabber.getPixels();
+    }
+    #endif
+
+
+    ///seems to run out of resources when trying to resize pixels here even on composite ...
+    //resized_pixels.resize(100, 100);//w,h);
+
+    ofTexture resized_texture;
+    resized_texture.allocate(width, height, GL_RGB);
+    resized_texture.loadData(resized_pixels.getData(),width, height, GL_RGBA );
+    return resized_texture;
+} 
+*/
 bool captur::isReady(){
     if (grabberType == "vidGrabber"){
         return vidGrabber.isInitialized();
