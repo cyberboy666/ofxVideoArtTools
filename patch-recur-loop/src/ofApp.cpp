@@ -4,19 +4,19 @@
 void ofApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(false);
-    recur.setup("video.mp4");
+    recurPlayer.setup("/home/pi/Videos/motorway01.mp4");
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
-    recur.update();
+    recurPlayer.update();
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
     // out_texture = recur.getSeamlessPlayerTexture();
     // out_texture.draw(0, 0);
-    recur.SeamlessPlayerDraw();
+    recurPlayer.playerDraw();
     }
 
 //--------------------------------------------------------------

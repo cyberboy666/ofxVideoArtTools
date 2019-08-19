@@ -2,8 +2,8 @@
 
 void recur::setup(string video){
     videoPath = video;
-    aPlayer.setup("a");
-    bPlayer.setup("b");
+    aPlayer.setup("ofxomxplayer", "a");
+    bPlayer.setup("ofxomxplayer", "b");
 
     isLoopSeamless = true;
     startSeamless();
@@ -11,8 +11,8 @@ void recur::setup(string video){
 
 void recur::startSeamless(){
     nowPlaying = aPlayer.name;
-    aPlayer.load(videoPath);
-    bPlayer.load(videoPath);
+    aPlayer.loadPlayer(videoPath);
+    bPlayer.loadPlayer(videoPath);
     bPlayer.status = "LOADING";
     aPlayer.playPlayer();
     aPlayer.status = "PLAYING";
@@ -49,7 +49,7 @@ void recur::updateSeamless(){
             nowPlaying = "b";
             bPlayer.playPlayer();
             bPlayer.status = "PLAYING";
-            aPlayer.loadAsync(videoPath);
+            aPlayer.loadPlayer(videoPath);
             aPlayer.status = "LOADING";
         }
     }
@@ -63,7 +63,7 @@ void recur::updateSeamless(){
             nowPlaying = "a";
             aPlayer.playPlayer();
             aPlayer.status = "PLAYING";
-            bPlayer.loadAsync(videoPath);
+            bPlayer.loadPlayer(videoPath);
             bPlayer.status = "LOADING";
         }
     }
