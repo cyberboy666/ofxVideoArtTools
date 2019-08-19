@@ -10,7 +10,8 @@ void incur::setupThis(string mapPath){
     isMidiListening = false;
     midiActions = {};
     isOscListening = false;
-    isAnalogListening = false;
+    isAnalogListening = true;
+    analogActions = {};
     bool parsingSuccessful = result.open(mapPath);
 }
 
@@ -28,8 +29,30 @@ bool incur::oscListening(){
 }
 
 bool incur::analogListening(){
-    isAnalogListening = false;
-    return isAnalogListening;
+    if(!isAnalogListening){
+        return false;
+    }
+#ifdef TARGET_RASPBERRY_PI
+    else{
+        a2d.setup("/dev/spidev1.0", SPI_MODE_0, 1000000, 8);
+
+        gpio4.setup(GPIO4, IN, HIGH);
+        gpio5.setup(GPIO5, IN, HIGH);
+        gpio6.setup(GPIO6, IN, HIGH);
+        gpio7.setup(GPIO7, IN, HIGH);
+        gpio9.setup(GPIO9, IN, HIGH);
+        gpio12.setup(GPIO12, IN, HIGH);
+        gpio13.setup(GPIO13, IN, HIGH);
+        gpio18.setup(GPIO18, IN, HIGH);
+        gpio22.setup(GPIO22, IN, HIGH);
+        gpio23.setup(GPIO23, IN, HIGH);
+
+        gpioList = {gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
+
+        return isAnalogListening;
+    }
+#endif
+    return false;
 }
 
 vector<vector<string>> incur::getActions(){
@@ -48,7 +71,10 @@ vector<vector<string>> incur::getActions(){
         actionsList.insert(actionsList.end(), oscActions.begin(), oscActions.end());
     }
     if(isAnalogListening){
+        vector<vector<string>> analogActions = readAnalogIn();
+        actionsList.insert(actionsList.end(), analogActions.begin(), analogActions.end());
         //do nothing for now
+
     }
     return actionsList;
 }
@@ -98,7 +124,7 @@ vector<vector<string>> incur::checkForOsc(){
                 string value = "";
                 if(m.getNumArgs() > 0){value = m.getArgAsString(0);}
                 float firstParam = m.getArgAsFloat(0);
-                vector<string> actionValue = {result["CC"][i][1].asString(), value};
+                vector<string> actionValue = {result["OSC"][i][1].asString(), value};
                 oscActions.push_back(actionValue);
             }
         }
@@ -112,7 +138,35 @@ void incur::onCharacterReceived(KeyListenerEventData& e){
     ofLog() << "im pressed";
     onKeyPress((int)e.character);
 }
+
 #endif
+
+vector<vector<string>> incur::readAnalogIn(){
+    vector<vector<string>> analogActions;
+#ifdef TARGET_RASPBERRY_PI
+    // first if any gpio pins are low - indicating a button is pressed
+   
+    for( Json::ArrayIndex i = 0; i < result["GPIO"].size(); i++){
+        int gpioPinNum = ofToInt(result["GPIO"][i][0].asString());
+        for( int j = 0; j < gpioList.size(); j++){
+            if(gpioList[j].get_igpionum() == gpioPinNum and gpioList[j].get() == 0){
+                vector<string> actionValue = {result["GPIO"][i][1].asString(), ""};
+                analogActions.push_back(actionValue);
+            }
+        }
+    }
+
+    // next check the a2d on spi1   
+    for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
+        int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
+        int value = a2d.getValueAllChannel(chip)[a2dIndex];
+        float normValue = (float)value / (float)1023;
+        vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
+        analogActions.push_back(actionValue);
+        }
+#endif
+    return analogActions;
+}
 
 
 void incur::exit(){

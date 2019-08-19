@@ -15,6 +15,10 @@ class ofApp : public ofBaseApp{
     incur userInput;
 
 	void runAction(string action, string amount);
+    void setShaderParam0(string amount);
+    void setShaderParam1(string amount);
+
+    void pushButton5();
 
 	void exit(string input);
 

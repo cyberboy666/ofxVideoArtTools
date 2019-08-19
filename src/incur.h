@@ -7,6 +7,7 @@
 #include "ofBaseApp.h"
 #ifdef TARGET_RASPBERRY_PI
 #include "TerminalListener.h"
+#include "ofxGPIO.h"
 #endif
 
 #ifdef TARGET_RASPBERRY_PI
@@ -28,6 +29,13 @@ class incur : public ofxMidiListener {
     #ifdef TARGET_RASPBERRY_PI
     TerminalListener consoleListener;
     void onCharacterReceived(KeyListenerEventData& e);
+    // analog inputs
+    MCP a2d;
+    MCP_DESC chip = MCP3008;
+    vector<int> analogIn;
+    // gpio from pushbutton
+    GPIO gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23;
+    vector<GPIO> gpioList;
     #endif
     bool isKeyListening;
     vector<vector<string>> keyActions;
@@ -54,4 +62,7 @@ class incur : public ofxMidiListener {
     // analog listening (not implemeted yet)
 
     bool isAnalogListening;
+    vector<vector<string>> analogActions;
+    vector<vector<string>> readAnalogIn();
+      
 };
