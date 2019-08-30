@@ -69,7 +69,15 @@ void recurVideoPlayer::setSpeedTo(float speedValue){
     
     //ofLog(OF_LOG_NOTICE, "the player speed is " + ofToString(getSpeed()) + "but it should be " + ofToString(speed));   
 }
-void recurVideoPlayer::quitPlayer(){
+void recurVideoPlayer::close(){
+    if(type == "ofxomxplayer"){
+    #ifdef TARGET_RASPBERRY_PI
+    omxPlayer.close();
+    #endif
+    }
+    else{
+    ofPlayer.close();
+    }
             //stop();
             //close();
 }
@@ -84,14 +92,14 @@ bool recurVideoPlayer::ifLoading(){
                // }
             //firstFrame();
             playPlayer();
-            ofLog(OF_LOG_NOTICE, "the playing position is " + ofToString(getPosition()));
+            //ofLog(OF_LOG_NOTICE, "the playing position is " + ofToString(getPosition()));
             
             if(getCurrentFrame() > 2  && getCurrentFrame() < 30){
                 //pausePlayer();
-                ofLog(OF_LOG_NOTICE, "the playing frame is " + ofToString(getCurrentFrame()));
+                //ofLog(OF_LOG_NOTICE, "the playing frame is " + ofToString(getCurrentFrame()));
 
                 if(start != 0){setPosition(start);}
-                ofLog(OF_LOG_NOTICE, "the position is " + ofToString(getPosition()) + "it should be " + ofToString(start));
+                //ofLog(OF_LOG_NOTICE, "the position is " + ofToString(getPosition()) + "it should be " + ofToString(start));
                 //aPlayer.setSpeed(aSpeed);
                 //updateStatus("a", "LOADED");
                 status = "LOADED";

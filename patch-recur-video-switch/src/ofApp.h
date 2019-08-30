@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "incur.h"
-
+#include "recur.h"
 
 class ofApp : public ofBaseApp{
 	public:
@@ -10,16 +10,16 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
+	recur recurPlayer;
 	void keyPressed(int key);
     ofFbo fbo;
     incur userInput;
 
 	void runAction(string action, string amount);
-    void setShaderParam0(string amount);
-    void setShaderParam1(string amount);
-
-    void pushButton5();
 
 	void exit(string input);
+    void loadVideo();
+    void switchVideo();
+    void loadAndSwitchVideo();
 
 };

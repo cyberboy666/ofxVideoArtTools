@@ -16,11 +16,11 @@ class recurVideoPlayer{
         #endif  
 
         void setup(string playerType, string nameValue);
-        void loadPlayer(string path, float start, float end, float speed);
+        void loadPlayer(string path, float start=0, float end=1, float speed=1);
         void playPlayer();
         void pausePlayer();
         void setSpeedTo(float speedValue);
-        void quitPlayer();
+        void close();
         bool ifLoading();
         bool ifPlaying();
 

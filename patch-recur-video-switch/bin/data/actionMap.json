@@ -19,13 +19,10 @@
         ["0", "setShaderParam0"],
         ["1", "setShaderParam1"]
     ],
-    "GPIO" : [
-        ["5", "pushButton5"],
-        ["23", "pushButton23"]
-    ],
     "KEY" : [
         ["q", "exit"],
-        ["a", "toggleDelayMode" ],
-        ["z", "increaseDelayFrame"]
+        ["a", "loadVideo" ],
+        ["s", "switchVideo" ],
+        ["d", "loadAndSwitchVideo"]
     ]
 }

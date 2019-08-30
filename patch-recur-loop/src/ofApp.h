@@ -11,6 +11,6 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
 
-	recur recur;
+	recur recurPlayer;
 	ofTexture out_texture;
 };
