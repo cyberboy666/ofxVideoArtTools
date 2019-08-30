@@ -13,7 +13,7 @@ public:
 
     
 // detour methods
-    ofPixels getFrame();
+    ofPixels getFrame(ofPixels in_frame);
 
     void addFrame(ofPixels in_frame);
     void checkMemory();
@@ -22,6 +22,7 @@ public:
     void setEnd(float value);
     void setPosition(float value);
     void setSpeed(float value);
+    void setDelaySize(float value);
     void printState();
 
     int getEndFrame();
