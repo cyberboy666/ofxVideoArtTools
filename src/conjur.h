@@ -8,13 +8,18 @@ class conjur{
         void setup();
         void loadShader(string shaderPath);
         void loadShaderFiles(string shaderPathFrag, string shaderPathVert);
-        void setDefaultParams(vector<ofTexture> textures);
-        void setAltParams(vector<ofTexture> textures);
+        void setSpeed(float value);
+        float getTime();
+        void setDefaultParams(vector<ofTexture> textures, float time);
+        void setAltParams(vector<ofTexture> textures, float time);
         ofFbo apply(vector<ofTexture> textures);
 
     ofShader shader;
     ofFbo fbo;
     vector<float> shaderParams;
+    float speed;
+    float time;
+    float lastElapsedTime;
     int paramNum;
     bool isActive;
 

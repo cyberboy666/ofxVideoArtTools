@@ -5,7 +5,9 @@ void conjur::setup(){
     isActive = true;
     shaderParams = {0, 0, 0, 0};
     paramNum = 0;
-
+    speed = 1;
+    time = 0;
+    lastElapsedTime = 0;
     fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
     fbo.begin();
         ofClear(0, 0, 0, 0);
@@ -22,12 +24,12 @@ void conjur::loadShaderFiles(string shaderPathFrag, string shaderPathVert){
 }
 
 ofFbo conjur::apply(vector<ofTexture> textures){
-    
+    float time = getTime();
     if(isActive){
         fbo.begin();
             shader.begin();
-                setDefaultParams(textures);
-                setAltParams(textures);
+                setDefaultParams(textures, time);
+                setAltParams(textures, time);
                 if(textures.size() > 0 ){
                     textures[0].draw(0, 0, ofGetWidth(), ofGetHeight());
                 }
@@ -45,8 +47,8 @@ ofFbo conjur::apply(vector<ofTexture> textures){
     return fbo;
 }
 
-void conjur::setDefaultParams(vector<ofTexture> textures){
-    shader.setUniform1f("u_time", ofGetElapsedTimef());
+void conjur::setDefaultParams(vector<ofTexture> textures, float time){
+    shader.setUniform1f("u_time", time);
     shader.setUniform2f("u_resolution", ofGetWidth(), ofGetHeight());
     for( int i = 0; i < shaderParams.size(); i = i + 1){
         shader.setUniform1f("u_x" + ofToString(i), shaderParams[i]);        
@@ -56,9 +58,9 @@ void conjur::setDefaultParams(vector<ofTexture> textures){
     }
 }
 
-void conjur::setAltParams(vector<ofTexture> textures){
-    shader.setUniform1f("ftime", ofGetElapsedTimef() - (long)ofGetElapsedTimef());
-    shader.setUniform1i("itime", ceil(ofGetElapsedTimef()));
+void conjur::setAltParams(vector<ofTexture> textures, float time){
+    shader.setUniform1f("ftime", (time) - (long)time);
+    shader.setUniform1i("itime", ceil(time));
     shader.setUniform2f("tres", ofGetWidth(), ofGetHeight());
     shader.setUniform4f("fparams", shaderParams[0], shaderParams[1], shaderParams[2], shaderParams[3] );
     shader.setUniform4i("iparams",0,0,0,0);
@@ -71,5 +73,17 @@ void conjur::setAltParams(vector<ofTexture> textures){
             shader.setUniformTexture("tex" + ofToString(i + 1), textures[i], i);
         }
     }
+}
+
+void conjur::setSpeed(float value){
+    speed = -2.0 + 4.0*value;    
+}
+
+float conjur::getTime(){
+    float currentElapsedTime = ofGetElapsedTimef();
+    float diff = lastElapsedTime - currentElapsedTime;
+    time = time + (speed*diff);
+    lastElapsedTime = currentElapsedTime;
+    return time;    
 }
 
