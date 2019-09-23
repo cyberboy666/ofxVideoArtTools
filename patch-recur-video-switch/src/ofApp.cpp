@@ -5,7 +5,7 @@ void ofApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(false);
     //userInput new incur();
-    recurPlayer.setup("/home/pi/Videos/motorway01.mp4");
+    recurPlayer.setup();
     recurPlayer.startSingle("/home/pi/Videos/motorway01.mp4");
     
     userInput.setupThis("actionMap.json");

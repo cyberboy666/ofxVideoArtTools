@@ -1,7 +1,6 @@
 #include "captur.h"
 
 void captur::setup(string givenType, int w, int h, int fr){
-    // hardcode the captur resolution and framerate for now
     width = w; //640;
     height = h; //480;
     framerate = fr;//30;
@@ -228,11 +227,11 @@ bool captur::isRecording(){
 
 void captur::close(){
     if (grabberType == "vidGrabber"){
-        return vidGrabber.close();
+        vidGrabber.close();
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "omxGrabber"){
-        return omxVidGrabber.close();
+        omxVidGrabber.close();
     }
     #endif        
 }

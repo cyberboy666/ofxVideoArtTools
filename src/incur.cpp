@@ -4,6 +4,8 @@ void incur::setupThis(string mapPath){
     #ifdef TARGET_RASPBERRY_PI
     consoleListener.setup(this);
     #endif
+    lastGetTime = ofGetElapsedTimef();
+    lastButtonTime = ofGetElapsedTimef();
     
     isKeyListening = true;
     keyActions = {};
@@ -34,12 +36,11 @@ bool incur::analogListening(){
     }
 #ifdef TARGET_RASPBERRY_PI
     else{
-        a2d.setup("/dev/spidev1.0", SPI_MODE_0, 1000000, 8);
+        //a2d.setup("/dev/spidev1.2", SPI_MODE_1, 1000000, 8);
 
         gpio4.setup(GPIO4, IN, HIGH);
         gpio5.setup(GPIO5, IN, HIGH);
         gpio6.setup(GPIO6, IN, HIGH);
-        gpio7.setup(GPIO7, IN, HIGH);
         gpio9.setup(GPIO9, IN, HIGH);
         gpio12.setup(GPIO12, IN, HIGH);
         gpio13.setup(GPIO13, IN, HIGH);
@@ -47,7 +48,7 @@ bool incur::analogListening(){
         gpio22.setup(GPIO22, IN, HIGH);
         gpio23.setup(GPIO23, IN, HIGH);
 
-        gpioList = {gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
+        gpioList = {gpio4, gpio5, gpio6, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
 
         return isAnalogListening;
     }
@@ -144,28 +145,40 @@ void incur::onCharacterReceived(KeyListenerEventData& e){
 vector<vector<string>> incur::readAnalogIn(){
     vector<vector<string>> analogActions;
 #ifdef TARGET_RASPBERRY_PI
-    // first if any gpio pins are low - indicating a button is pressed
-   
-    for( Json::ArrayIndex i = 0; i < result["GPIO"].size(); i++){
-        int gpioPinNum = ofToInt(result["GPIO"][i][0].asString());
-        for( int j = 0; j < gpioList.size(); j++){
-            if(gpioList[j].get_igpionum() == gpioPinNum and gpioList[j].get() == 0){
-                vector<string> actionValue = {result["GPIO"][i][1].asString(), ""};
-                analogActions.push_back(actionValue);
+    float nowGetTime = ofGetElapsedTimef();
+    float timeDiff = nowGetTime - lastGetTime;
+    //ofLog() << "time dif is " << timeDiff; 
+    if(timeDiff < 0.1 ){return analogActions;}
+    else{
+        float buttonTimeDiff = nowGetTime - lastButtonTime;
+        // first if any gpio pins are low - indicating a button is pressed
+       if(buttonTimeDiff > 0.4 ){
+            for( Json::ArrayIndex i = 0; i < result["GPIO"].size(); i++){
+                int gpioPinNum = ofToInt(result["GPIO"][i][0].asString());
+                for( int j = 0; j < gpioList.size(); j++){
+                    if(gpioList[j].get_igpionum() == gpioPinNum and gpioList[j].get() == 0){
+                        ofLog() << "key is pressed " << result["GPIO"][i][1].asString();
+                        lastButtonTime = nowGetTime;
+                        vector<string> actionValue = {result["GPIO"][i][1].asString(), ""};
+                        analogActions.push_back(actionValue);
+                    }
+                }
             }
+ 
         }
-    }
-
-    // next check the a2d on spi1   
-    for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
-        int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
-        int value = a2d.getValueAllChannel(chip)[a2dIndex];
-        float normValue = (float)value / (float)1023;
-        vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
-        analogActions.push_back(actionValue);
-        }
+        lastGetTime = nowGetTime;
+        // next check the a2d on spi1
+    /*   
+        for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
+            int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
+            int value = a2d.getValueAllChannel(chip)[a2dIndex];
+            float normValue = (float)value / (float)1023;
+            vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
+            analogActions.push_back(actionValue);
+        }*/
 #endif
-    return analogActions;
+        return analogActions;
+    }
 }
 
 

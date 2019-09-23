@@ -11,17 +11,20 @@ void ofApp::setup(){
     //ofSetFullscreen(1);
     fbo.allocate(ofGetScreenWidth(), ofGetScreenHeight());
 
-    videoInput.setup("vidGrabber");
-    //videoInput.setup("piCamera");
+    //videoInput.setup("vidGrabber");
+    videoInput.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     videoInput.update();
+
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
-    videoInput.draw(0,0);
+    if(videoInput.isReady()){
+        videoInput.draw(0,0);
+    }
 
 }
 
@@ -34,6 +37,12 @@ void ofApp::keyPressed (int key){
              break;
         case 'w':
             videoInput.stopRecording();
+             break;
+        case 's':
+            videoInput.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25);
+             break;
+        case 'd':
+            videoInput.close();
              break;
     }
 

@@ -1,18 +1,18 @@
 #include "recur.h"
 
-void recur::setup(string path){
+void recur::setup(){
 
     aPlayer.setup("ofxomxplayer", "a");
     bPlayer.setup("ofxomxplayer", "b");
 
-    isLoopSeamless = true;
+    /*isLoopSeamless = true;
 
     if(isLoopSeamless == true){
         startSeamless(path);
     }
     else{
         startSingle(path);
-    }
+    }*/
 }
 
 void recur::startSeamless(string path){
@@ -96,7 +96,6 @@ void recur::updateSeamless(){
 void recur::updateSingle(){
     aPlayer.update();
 
-
     bool aIsFinished;
     if(aPlayer.status == "PLAYING"){ aIsFinished = aPlayer.ifPlaying();}
     if(aPlayer.status == "FINISHED"){
@@ -148,6 +147,16 @@ void recur::switchNext(){
         }
     }
 */
+}
+
+bool recur::isLoaded(){
+    if(nowPlaying == "a"){
+        return aPlayer.isLoaded();
+    }
+    else if(nowPlaying == "b"){
+        return bPlayer.isLoaded();
+    }
+    return false;
 }
 
 void recur::closeAll(){

@@ -4,7 +4,7 @@
 
 class recur {
     public:
-        void setup(string path);
+        void setup();
         void update();
         //void drawPlayerIfPlayingOrPaused(recurVideoPlayer player);
 
@@ -20,6 +20,7 @@ class recur {
         ofTexture getPlayerTexture();
         void playerDraw();
         bool isLoopSeamless;
+        bool isLoaded();
 
         void startSingle(string path);
         void updateSingle();
