@@ -79,6 +79,12 @@ void conjur::setSpeed(float value){
     speed = -2.0 + 4.0*value;    
 }
 
+void conjur::setPlay(bool play){
+    float time = getTime(); // resets the time diff if stopping and starting
+    if(play){ speed = 1; }
+    else{ speed = 0; }
+}
+
 float conjur::getTime(){
     float currentElapsedTime = ofGetElapsedTimef();
     float diff = lastElapsedTime - currentElapsedTime;

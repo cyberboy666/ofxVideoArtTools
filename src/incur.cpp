@@ -41,6 +41,7 @@ bool incur::analogListening(){
         gpio4.setup(GPIO4, IN, HIGH);
         gpio5.setup(GPIO5, IN, HIGH);
         gpio6.setup(GPIO6, IN, HIGH);
+        gpio7.setup(GPIO7, IN, HIGH);
         gpio9.setup(GPIO9, IN, HIGH);
         gpio12.setup(GPIO12, IN, HIGH);
         gpio13.setup(GPIO13, IN, HIGH);
@@ -48,7 +49,7 @@ bool incur::analogListening(){
         gpio22.setup(GPIO22, IN, HIGH);
         gpio23.setup(GPIO23, IN, HIGH);
 
-        gpioList = {gpio4, gpio5, gpio6, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
+        gpioList = {gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
 
         return isAnalogListening;
     }

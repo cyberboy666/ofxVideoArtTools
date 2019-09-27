@@ -159,6 +159,17 @@ bool recur::isLoaded(){
     return false;
 }
 
+void recur::setPlay(bool play){
+    if(nowPlaying == "a"){
+        if(play){aPlayer.playPlayer(); }
+        else{aPlayer.pausePlayer(); }
+    }
+    else if(nowPlaying == "b"){
+        if(play){bPlayer.playPlayer(); }
+        else{bPlayer.pausePlayer(); }
+    }
+}
+
 void recur::closeAll(){
     aPlayer.close();
     bPlayer.close();

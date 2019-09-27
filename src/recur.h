@@ -17,6 +17,7 @@ class recur {
 
         void loadNext(string path);
         void switchNext();
+        void setPlay(bool play);
         ofTexture getPlayerTexture();
         void playerDraw();
         bool isLoopSeamless;
