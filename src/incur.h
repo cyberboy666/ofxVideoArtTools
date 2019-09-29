@@ -36,8 +36,9 @@ class incur : public ofxMidiListener {
     MCP_DESC chip = MCP3008;
     vector<int> analogIn;
     // gpio from pushbutton
-    GPIO gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23;
+    GPIO gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio19, gpio22, gpio23;
     vector<GPIO> gpioList;
+    vector<int> lastAnalogReading;
     #endif
     bool isKeyListening;
     vector<vector<string>> keyActions;

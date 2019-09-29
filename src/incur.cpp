@@ -6,6 +6,7 @@ void incur::setupThis(string mapPath){
     #endif
     lastGetTime = ofGetElapsedTimef();
     lastButtonTime = ofGetElapsedTimef();
+    lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
     
     isKeyListening = true;
     keyActions = {};
@@ -36,7 +37,7 @@ bool incur::analogListening(){
     }
 #ifdef TARGET_RASPBERRY_PI
     else{
-        //a2d.setup("/dev/spidev1.2", SPI_MODE_1, 1000000, 8);
+        a2d.setup("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
 
         gpio4.setup(GPIO4, IN, HIGH);
         gpio5.setup(GPIO5, IN, HIGH);
@@ -46,10 +47,11 @@ bool incur::analogListening(){
         gpio12.setup(GPIO12, IN, HIGH);
         gpio13.setup(GPIO13, IN, HIGH);
         gpio18.setup(GPIO18, IN, HIGH);
+        gpio19.setup(GPIO19, IN, HIGH);
         gpio22.setup(GPIO22, IN, HIGH);
         gpio23.setup(GPIO23, IN, HIGH);
 
-        gpioList = {gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio22, gpio23};
+        gpioList = {gpio4, gpio5, gpio6, gpio7, gpio9, gpio12, gpio13, gpio18, gpio19, gpio22, gpio23};
 
         return isAnalogListening;
     }
@@ -168,15 +170,19 @@ vector<vector<string>> incur::readAnalogIn(){
  
         }
         lastGetTime = nowGetTime;
-        // next check the a2d on spi1
-    /*   
+        // next check the a2d on spi0
+       
         for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
             int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
             int value = a2d.getValueAllChannel(chip)[a2dIndex];
+            //ofLog() << "value " << value;
+            if(value - lastAnalogReading[a2dIndex] < 5 && value - lastAnalogReading[a2dIndex] > -5 ){continue;}
+            lastAnalogReading[a2dIndex] = value;
             float normValue = (float)value / (float)1023;
+            normValue = roundf(normValue * 100) / 100; 
             vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
             analogActions.push_back(actionValue);
-        }*/
+        }
 #endif
         return analogActions;
     }
@@ -184,6 +190,8 @@ vector<vector<string>> incur::readAnalogIn(){
 
 
 void incur::exit(){
-    midiIn.closePort();
-    midiIn.removeListener(this);
+	a2d.quit();
+    //midiIn.closePort();
+    //midiIn.removeListener(this);
+
 }
