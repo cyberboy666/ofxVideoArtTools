@@ -32,6 +32,7 @@ class incur : public ofxMidiListener {
     TerminalListener consoleListener;
     void onCharacterReceived(KeyListenerEventData& e);
     // analog inputs
+    int adcDelay; 
     MCP a2d;
     MCP_DESC chip = MCP3008;
     vector<int> analogIn;

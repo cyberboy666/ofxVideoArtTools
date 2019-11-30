@@ -7,7 +7,7 @@ void incur::setupThis(string mapPath){
     lastGetTime = ofGetElapsedTimef();
     lastButtonTime = ofGetElapsedTimef();
     lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
-    
+    adcDelay = 0.1; 
     isKeyListening = true;
     keyActions = {};
     isMidiListening = false;
@@ -151,7 +151,7 @@ vector<vector<string>> incur::readAnalogIn(){
     float nowGetTime = ofGetElapsedTimef();
     float timeDiff = nowGetTime - lastGetTime;
     //ofLog() << "time dif is " << timeDiff; 
-    if(timeDiff < 0.1 ){return analogActions;}
+    if(timeDiff < adcDelay ){return analogActions;}
     else{
         float buttonTimeDiff = nowGetTime - lastButtonTime;
         // first if any gpio pins are low - indicating a button is pressed
