@@ -150,7 +150,7 @@ vector<vector<string>> incur::readAnalogIn(){
 #ifdef TARGET_RASPBERRY_PI
     float nowGetTime = ofGetElapsedTimef();
     float timeDiff = nowGetTime - lastGetTime;
-    //ofLog() << "time dif is " << timeDiff; 
+    
     if(timeDiff < adcDelay ){return analogActions;}
     else{
         float buttonTimeDiff = nowGetTime - lastButtonTime;
