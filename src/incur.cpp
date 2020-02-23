@@ -3,17 +3,19 @@
 void incur::setupThis(string mapPath){
     #ifdef TARGET_RASPBERRY_PI
     consoleListener.setup(this);
+    lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
+    adcDelay = 0.1; 
+    isAnalogListening = true;
+    #else
+    isAnalogListening = false;
     #endif
     lastGetTime = ofGetElapsedTimef();
     lastButtonTime = ofGetElapsedTimef();
-    lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
-    adcDelay = 0.1; 
     isKeyListening = true;
     keyActions = {};
     isMidiListening = false;
     midiActions = {};
     isOscListening = false;
-    isAnalogListening = true;
     analogActions = {};
     bool parsingSuccessful = result.open(mapPath);
 }
@@ -146,8 +148,8 @@ void incur::onCharacterReceived(KeyListenerEventData& e){
 #endif
 
 vector<vector<string>> incur::readAnalogIn(){
-    vector<vector<string>> analogActions;
 #ifdef TARGET_RASPBERRY_PI
+    vector<vector<string>> analogActions;
     float nowGetTime = ofGetElapsedTimef();
     float timeDiff = nowGetTime - lastGetTime;
     
@@ -183,14 +185,16 @@ vector<vector<string>> incur::readAnalogIn(){
             vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
             analogActions.push_back(actionValue);
         }
-#endif
         return analogActions;
     }
+#endif
 }
 
 
 void incur::exit(){
+#ifdef TARGET_RASPBERRY_PI
 	a2d.quit();
+#endif
     //midiIn.closePort();
     //midiIn.removeListener(this);
 
