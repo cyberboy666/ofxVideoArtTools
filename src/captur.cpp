@@ -199,8 +199,9 @@ void captur::stopRecording(){
     if (grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
         ofLog() << "stop usb recording !!!!!!!!!!!!!!!!!!!!!!";
         //nothing yet
-        vidRecorder.close();
         isRecordingFinished = false; // let the callback turn  this on
+        vidRecorder.close();
+        
     }
     #ifdef TARGET_RASPBERRY_PI
     else if(grabberType == "vidGrabber" && recorderType == "omxRecorder"){

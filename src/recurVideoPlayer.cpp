@@ -4,11 +4,13 @@ void recurVideoPlayer::setup(string playerType, string nameValue){
     type = playerType;
     if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
+    omxSettings.initialVolume = 0.5;
     omxPlayer.setup(omxSettings);
     #endif
     }
     else{
     //ofPlayer.setup();
+    
     }
     name = nameValue;
     status = "EMPTY";
@@ -27,6 +29,7 @@ void recurVideoPlayer::loadPlayer(string pathValue, float startValue, float endV
     }
     else{
     ofPlayer.loadAsync(pathValue);
+    ofPlayer.setVolume(1.0);    
     }
     
     start = startValue;
