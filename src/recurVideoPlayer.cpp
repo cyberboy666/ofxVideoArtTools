@@ -157,7 +157,7 @@ int recurVideoPlayer::getCurrentFrame(){
     #ifdef TARGET_RASPBERRY_PI
     return omxPlayer.getCurrentFrame();
     #else
-    return 0
+    return 0;
     #endif
     }
     else{
@@ -170,7 +170,7 @@ int recurVideoPlayer::getTotalNumFrames(){
     #ifdef TARGET_RASPBERRY_PI
     return omxPlayer.getTotalNumFrames();
     #else
-    return 0
+    return 0;
     #endif
     }
     else{
