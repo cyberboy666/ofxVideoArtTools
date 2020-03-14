@@ -32,7 +32,7 @@ void captur::setup(string givenType, int w, int h, int fr){
     }
     if(grabberType == "vidGrabber" && recorderType == "VideoRecorder"){
         vidRecorder.setVideoCodec("mpeg4");
-        vidRecorder.setVideoBitrate("800k");
+        vidRecorder.setVideoBitrate("2000k");
         ofAddListener(vidRecorder.outputFileCompleteEvent, this, &captur::recordingComplete);
     }
     
