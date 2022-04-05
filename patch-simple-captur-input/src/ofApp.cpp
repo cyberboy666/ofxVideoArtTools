@@ -4,12 +4,15 @@
 void ofApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(false);
+    #ifdef TARGET_RASPBERRY_PI
     consoleListener.setup(this);
+    #endif
     //ofHideCursor();    
-    ofSetFrameRate(60);
-    ofSetLogLevel(OF_LOG_VERBOSE);
+    // ofSetFrameRate(60);
+    //ofSetLogLevel(OF_LOG_VERBOSE);
     //ofSetFullscreen(1);
-    fbo.allocate(ofGetScreenWidth(), ofGetScreenHeight());
+    // fbo.allocate(ofGetScreenWidth(), ofGetScreenHeight());
+    fbo.allocate(ofGetWidth(), ofGetHeight());
 
     //videoInput.setup("vidGrabber");
     videoInput.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25);

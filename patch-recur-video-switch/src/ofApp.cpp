@@ -6,7 +6,7 @@ void ofApp::setup(){
 	ofSetVerticalSync(false);
     //userInput new incur();
     recurPlayer.setup();
-    recurPlayer.startSingle("/home/pi/Videos/motorway01.mp4");
+    recurPlayer.startSingle("/home/timcaldwell/Videos/cyberboy666/lan_party_01.mp4");
     
     userInput.setupThis("actionMap.json");
     //incur.newMidiMessage();
@@ -47,7 +47,7 @@ void ofApp::runAction(string action, string amount){
  }
 
 void ofApp::loadVideo(){
-    recurPlayer.loadNext("/home/pi/Videos/motorway02.mp4");
+    recurPlayer.loadNext("/home/timcaldwell/Videos/cyberboy666/lan_party_02.mp4");
 }
 
 void ofApp::switchVideo(){
@@ -55,7 +55,7 @@ void ofApp::switchVideo(){
 }
 
 void ofApp::loadAndSwitchVideo(){
-    recurPlayer.loadNext("/home/pi/Videos/motorway03.mp4");
+    recurPlayer.loadNext("/home/timcaldwell/Videos/cyberboy666/lan_party_03.mp4");
     recurPlayer.switchNext();
 }
 

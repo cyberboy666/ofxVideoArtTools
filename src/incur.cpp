@@ -14,16 +14,18 @@ void incur::setupThis(string mapPath){
     isKeyListening = true;
     keyActions = {};
     isMidiListening = false;
+    midiIgnoreCcOff = false;
     midiActions = {};
     isOscListening = false;
     analogActions = {};
     bool parsingSuccessful = result.open(mapPath);
 }
 
-bool incur::midiListening(){
+bool incur::midiListening(bool ignoreCcOff){
     midiIn.openPort(1);
     midiIn.addListener(this);
     isMidiListening = midiIn.isOpen();
+    midiIgnoreCcOff = ignoreCcOff;
     return isMidiListening;
 }
 
@@ -112,9 +114,13 @@ void incur::newMidiMessage(ofxMidiMessage& msg) {
     else if(msg.status == MIDI_CONTROL_CHANGE){
         for( Json::ArrayIndex i = 0; i < result["MIDI"]["CC"].size(); i++){
             if(result["MIDI"]["CC"][i][0].asString() == ofToString(msg.control) ){
-                float normValue = (float)msg.value / (float)127;
-                vector<string> actionValue = {result["MIDI"]["NOTE_ON"][i][1].asString(), ofToString(normValue)};
-                midiActions.push_back(actionValue);
+                if(msg.value == 0 && midiIgnoreCcOff){}
+                else{
+                    float normValue = (float)msg.value / (float)127;
+                    vector<string> actionValue = {result["MIDI"]["CC"][i][1].asString(), ofToString(normValue)};
+                    midiActions.push_back(actionValue);
+                }
+
             }
         }
     }   
@@ -148,8 +154,8 @@ void incur::onCharacterReceived(KeyListenerEventData& e){
 #endif
 
 vector<vector<string>> incur::readAnalogIn(){
-#ifdef TARGET_RASPBERRY_PI
     vector<vector<string>> analogActions;
+#ifdef TARGET_RASPBERRY_PI
     float nowGetTime = ofGetElapsedTimef();
     float timeDiff = nowGetTime - lastGetTime;
     
@@ -185,9 +191,10 @@ vector<vector<string>> incur::readAnalogIn(){
             vector<string> actionValue = {result["ANALOG"][i][1].asString(), ofToString(normValue)};
             analogActions.push_back(actionValue);
         }
-        return analogActions;
+        
     }
 #endif
+return analogActions;
 }
 
 

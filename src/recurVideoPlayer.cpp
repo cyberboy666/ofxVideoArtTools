@@ -10,6 +10,7 @@ void recurVideoPlayer::setup(string playerType, string nameValue){
     }
     else{
     //ofPlayer.setup();
+    ofPlayer.setPixelFormat(OF_PIXELS_RGBA);
     
     }
     name = nameValue;

@@ -2,8 +2,8 @@
 
 void recur::setup(){
 
-    aPlayer.setup("ofxomxplayer", "a");
-    bPlayer.setup("ofxomxplayer", "b");
+    aPlayer.setup("ofplayer", "a");
+    bPlayer.setup("ofplayer", "b");
 
     /*isLoopSeamless = true;
 

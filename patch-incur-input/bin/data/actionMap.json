@@ -5,8 +5,9 @@
             ["22", "doAnotherThing"]
         ],
         "CC" : [
-            ["1", "setThisThing"],
-            ["4", "updateToThisValue"]
+            ["0", "setShaderParam0"],
+            ["1", "setShaderParam1"],
+            ["32", "pushButton5"]
         ]
     },
     "OSC" : [

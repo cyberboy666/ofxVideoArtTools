@@ -20,16 +20,16 @@ void ofApp::setup(){
 	shaderPath = "shadersGL3/mixShader";
     #endif
 
-    captur.setup("vidGrabber");
-    conjur.setup();
-    conjur.loadShader(shaderPath);
+    capture.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25);
+    conjure.setup();
+    conjure.loadShader(shaderPath);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    captur.update();
-    vector<ofTexture> input = { captur.getTexture()};
-    fbo = conjur.apply(input);
+    capture.update();
+    vector<ofTexture> input = { capture.getTexture()};
+    fbo = conjure.apply(input);
     }
 
 //--------------------------------------------------------------

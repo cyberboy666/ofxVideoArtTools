@@ -7,7 +7,7 @@ void ofApp::setup(){
     //userInput new incur();
 
     userInput.setupThis("actionMap.json");
-    userInput.analogListening();
+    ofLog() << "has midi: " << userInput.midiListening();
     //incur.newMidiMessage();
 }
 
@@ -15,7 +15,7 @@ void ofApp::setup(){
 void ofApp::update(){
         vector<vector<string>> actionsList = userInput.getActions();
         for( int i = 0; i < actionsList.size(); i++){
-            //ofLog() << "action is " << actionsList[i][0] << "value is " << actionsList[i][1];
+            // ofLog() << "action is " << actionsList[i][0] << "value is " << actionsList[i][1];
             runAction(actionsList[i][0], actionsList[i][1]);
         }
     }
@@ -45,11 +45,11 @@ void ofApp::pushButton5(){
 }
 
 void ofApp::setShaderParam0(string amount){
-    //ofLog() << "setShaderParam0: " << amount;
+    ofLog() << "setShaderParam0: " << amount;
 }
 
 void ofApp::setShaderParam1(string amount){
-    //ofLog() << "setShaderParam1: " << amount;
+    ofLog() << "setShaderParam1: " << amount;
 }
 
  void ofApp::exit(string input){

@@ -20,7 +20,7 @@ class incur : public ofxMidiListener {
         void setupThis(string mapPath);
         void exit();
 
-        bool midiListening();
+        bool midiListening(bool ignoreCcOff = false);
         bool oscListening();
         bool analogListening();
         vector<vector<string>> getActions();
@@ -50,6 +50,7 @@ class incur : public ofxMidiListener {
     // midi listening 
 
     bool isMidiListening;
+    bool midiIgnoreCcOff;
     vector<vector<string>> midiActions;
     void newMidiMessage(ofxMidiMessage& eventArgs);
 	ofxMidiIn midiIn;

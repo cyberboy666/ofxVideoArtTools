@@ -1,8 +1,8 @@
 #include "captur.h"
 
 void captur::setup(string givenType, int w, int h, int fr){
-    width = w; //640;
-    height = h; //480;
+    width = 640;
+    height = 480;
     framerate = fr;//30;
 
     recorderType = "VideoRecorder";
@@ -109,25 +109,29 @@ void captur::draw(int x, int y, int w, int h){
 }
 
 ofPixels captur::getPixels(){
+    ofPixels pix;
     if (grabberType == "vidGrabber"){
-        return vidGrabber.getPixels();
+        pix = vidGrabber.getPixels();
     }
     #ifdef TARGET_RASPBERRY_PI
     else{ // if(grabberType == "omxGrabber"){
-        return omxVidGrabber.getPixels();
+        pix = omxVidGrabber.getPixels();
     }
     #endif
+    return pix;
 } 
 
 ofTexture captur::getTexture(){
+    ofTexture tex;
     if (grabberType == "vidGrabber"){
-        return vidGrabber.getTexture();
+        tex = vidGrabber.getTexture();
     }
     #ifdef TARGET_RASPBERRY_PI
     else{ // if(grabberType == "omxGrabber"){
-        return omxVidGrabber.getTextureReference();
+        tex = omxVidGrabber.getTextureReference();
     }
     #endif
+    return tex;
 } 
 
 /*
@@ -155,25 +159,29 @@ ofTexture captur::getTextureAndResize(int width, int height){
 } 
 */
 bool captur::isReady(){
+    bool isReady;
     if (grabberType == "vidGrabber"){
-        return vidGrabber.isInitialized();
+        isReady = vidGrabber.isInitialized();
     }
     #ifdef TARGET_RASPBERRY_PI
     else{ // if(grabberType == "omxGrabber"){
-        return omxVidGrabber.isReady();
+        isReady =  omxVidGrabber.isReady();
     }
     #endif    
+    return isReady;
 }
 
 bool captur::isFrameNew(){
+    bool isNew;
     if (grabberType == "vidGrabber"){
-        return vidGrabber.isFrameNew();
+        isNew = vidGrabber.isFrameNew();
     }
     #ifdef TARGET_RASPBERRY_PI
     else{ // if(grabberType == "omxGrabber"){
-        return omxVidGrabber.isFrameNew();
+        isNew = omxVidGrabber.isFrameNew();
     }
     #endif    
+    return isNew;
 }
 
 void captur::startRecording(){
