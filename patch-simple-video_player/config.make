@@ -17,7 +17,7 @@
 #    
 ################################################################################
 # PROJECT_ROOT = .
-
+PROJECT_LDFLAGS += -latomic
 ################################################################################
 # PROJECT SPECIFIC CHECKS
 #   This is a project defined section to create internal makefile flags to 

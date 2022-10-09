@@ -22,6 +22,11 @@ void incur::setupThis(string mapPath){
 }
 
 bool incur::midiListening(bool ignoreCcOff){
+    midiIn.listInPorts();
+    if(midiIn.getNumInPorts() < 2){
+    ofLog() << "no external midi device attached";
+    return false;
+    }
     midiIn.openPort(1);
     midiIn.addListener(this);
     isMidiListening = midiIn.isOpen();

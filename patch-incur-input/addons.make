@@ -1,11 +1,11 @@
 
 ofxOsc
-#ofxOMXCamera
-#ofxXmlSettings
+ofxOMXCamera
+ofxXmlSettings
 ofxVideoArtTools
 ofxVideoRecorder
-#ofxOMXPlayer
+ofxOMXPlayer
 ofxPoco
-#ofxGPIO
+ofxGPIO
 ofxMidi
 ofxJSON
