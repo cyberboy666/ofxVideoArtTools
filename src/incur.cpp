@@ -46,7 +46,8 @@ bool incur::analogListening(){
     }
 #ifdef TARGET_RASPBERRY_PI
     else{
-        a2d.setup("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
+        a2d0.setup("/dev/spidev0.0", SPI_MODE_0, 1000000, 8);
+        a2d1.setup("/dev/spidev0.1", SPI_MODE_0, 1000000, 8);
 
         gpio4.setup(GPIO4, IN, HIGH);
         gpio5.setup(GPIO5, IN, HIGH);
@@ -187,7 +188,12 @@ vector<vector<string>> incur::readAnalogIn(){
        
         for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
             int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
-            int value = a2d.getValueAllChannel(chip)[a2dIndex];
+            if(ad2Index < 8){
+                int value = a2d0.getValueAllChannel(chip)[a2dIndex];
+            }
+            else if(8 <= ad2Index < 16){
+                int value = a2d1.getValueAllChannel(chip)[a2dIndex - 8];
+            }
             //ofLog() << "value " << value;
             if(value - lastAnalogReading[a2dIndex] < 5 && value - lastAnalogReading[a2dIndex] > -5 ){continue;}
             lastAnalogReading[a2dIndex] = value;
