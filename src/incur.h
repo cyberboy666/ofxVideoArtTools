@@ -33,7 +33,8 @@ class incur : public ofxMidiListener {
     void onCharacterReceived(KeyListenerEventData& e);
     // analog inputs
     float adcDelay; 
-    MCP a2d;
+    MCP a2d0;
+    MCP a2d1;
     MCP_DESC chip = MCP3008;
     vector<int> analogIn;
     // gpio from pushbutton

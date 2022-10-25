@@ -5,7 +5,7 @@ void incur::setupThis(string mapPath){
     consoleListener.setup(this);
     lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
     adcDelay = 0.1; 
-    isAnalogListening = true;
+    isAnalogListening = false;
     #else
     isAnalogListening = false;
     #endif
@@ -188,11 +188,12 @@ vector<vector<string>> incur::readAnalogIn(){
        
         for( Json::ArrayIndex i = 0; i < result["ANALOG"].size(); i++){
             int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
-            if(ad2Index < 8){
-                int value = a2d0.getValueAllChannel(chip)[a2dIndex];
+            int value = 0;
+            if(a2dIndex < 8){
+                value = a2d0.getValueAllChannel(chip)[a2dIndex];
             }
-            else if(8 <= ad2Index < 16){
-                int value = a2d1.getValueAllChannel(chip)[a2dIndex - 8];
+            else if(8 <= a2dIndex < 16){
+                value = a2d1.getValueAllChannel(chip)[a2dIndex - 8];
             }
             //ofLog() << "value " << value;
             if(value - lastAnalogReading[a2dIndex] < 5 && value - lastAnalogReading[a2dIndex] > -5 ){continue;}
@@ -211,7 +212,8 @@ return analogActions;
 
 void incur::exit(){
 #ifdef TARGET_RASPBERRY_PI
-	a2d.quit();
+	a2d0.quit();
+        a2d1.quit();
 #endif
     //midiIn.closePort();
     //midiIn.removeListener(this);
