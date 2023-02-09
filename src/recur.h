@@ -4,7 +4,7 @@
 
 class recur {
     public:
-        void setup();
+        void setup(string playerType="ofplayer");
         void update();
         //void drawPlayerIfPlayingOrPaused(recurVideoPlayer player);
 
