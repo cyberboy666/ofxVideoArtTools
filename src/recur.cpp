@@ -1,9 +1,9 @@
 #include "recur.h"
 
-void recur::setup(){
+void recur::setup(string playerType){
 
-    aPlayer.setup("ofplayer", "a");
-    bPlayer.setup("ofplayer", "b");
+    aPlayer.setup(playerType, "a");
+    bPlayer.setup(playerType, "b");
 
     /*isLoopSeamless = true;
 
