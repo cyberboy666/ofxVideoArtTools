@@ -1,6 +1,6 @@
 #include "captur.h"
 
-void captur::setup(string givenType, int w, int h, int fr){
+void captur::setup(string givenType, int w, int h, int fr, int id){
     width = 640;
     height = 480;
     framerate = fr;//30;
@@ -19,7 +19,7 @@ void captur::setup(string givenType, int w, int h, int fr){
     }
 
     if(grabberType == "vidGrabber"){
-        vidGrabber.setDeviceID(0);
+        vidGrabber.setDeviceID(id);
         vidGrabber.setDesiredFrameRate(framerate);
         vidGrabber.initGrabber(width, height);
         // vidGrabber.setPixelFormat(GL_RGBA);

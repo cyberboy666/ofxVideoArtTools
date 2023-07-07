@@ -15,7 +15,7 @@ void ofApp::setup(){
     fbo.allocate(ofGetWidth(), ofGetHeight());
 
     //videoInput.setup("vidGrabber");
-    videoInput.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25);
+    videoInput.setup("vidGrabber", ofGetWidth(), ofGetHeight(), 25, 0);
 }
 
 //--------------------------------------------------------------

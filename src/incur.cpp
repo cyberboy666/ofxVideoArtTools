@@ -77,8 +77,10 @@ vector<vector<string>> incur::getActions(){
         keyActions.clear();
     }
     if(isMidiListening){
+        midiMutex.lock();
         actionsList.insert(actionsList.end(), midiActions.begin(), midiActions.end());
         midiActions.clear();
+        midiMutex.unlock();
     }
     if(isOscListening){
         vector<vector<string>> oscActions = checkForOsc();
@@ -109,6 +111,7 @@ void incur::onKeyPress(int e)// removed this for now KeyListenerEventData& e)
 }
 
 void incur::newMidiMessage(ofxMidiMessage& msg) {
+    midiMutex.lock();
     if(msg.status == MIDI_NOTE_ON){
         for( Json::ArrayIndex i = 0; i < result["MIDI"]["NOTE_ON"].size(); i++){
             if(result["MIDI"]["NOTE_ON"][i][0].asString() == ofToString(msg.pitch) ){
@@ -130,6 +133,7 @@ void incur::newMidiMessage(ofxMidiMessage& msg) {
             }
         }
     }   
+    midiMutex.unlock();
 }
 
 vector<vector<string>> incur::checkForOsc(){
