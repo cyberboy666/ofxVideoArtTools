@@ -24,6 +24,7 @@ class incur : public ofxMidiListener {
         bool oscListening();
         bool analogListening();
         vector<vector<string>> getActions();
+        vector<int> getKeyPassthrough();
 
     float lastButtonTime;
     float lastGetTime;
@@ -42,6 +43,8 @@ class incur : public ofxMidiListener {
     vector<int> lastAnalogReading;
     #endif
     bool isKeyListening;
+    bool isKeyPassthrough;
+    vector<int> keyPressPassthrough;
     vector<vector<string>> keyActions;
     
     void onKeyPress(int e); // removed this for now KeyListenerEventData& e);

@@ -12,6 +12,7 @@ void incur::setupThis(string mapPath){
     lastGetTime = ofGetElapsedTimef();
     lastButtonTime = ofGetElapsedTimef();
     isKeyListening = true;
+    isKeyPassthrough = false;
     keyActions = {};
     isMidiListening = false;
     midiIgnoreCcOff = false;
@@ -94,9 +95,21 @@ vector<vector<string>> incur::getActions(){
     return actionsList;
 }
 
+vector<int> incur::getKeyPassthrough(){
+    vector<int> currentKeyPress;
+    currentKeyPress.insert(currentKeyPress.end(), keyPressPassthrough.begin(), keyPressPassthrough.end());
+    keyPressPassthrough.clear();
+    return currentKeyPress;
+}
+
 
 void incur::onKeyPress(int e)// removed this for now KeyListenerEventData& e)
 {
+    if(isKeyPassthrough){
+        keyPressPassthrough.push_back(e);
+        return;
+    }
+
     char c = e;
     string s;
     s.push_back(c);

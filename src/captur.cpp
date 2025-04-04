@@ -19,6 +19,10 @@ void captur::setup(string givenType, int w, int h, int fr, int id){
     }
 
     if(grabberType == "vidGrabber"){
+        ofLog() << "ID IS " << id;
+        vidGrabber.close();
+        vidGrabber.unbind();
+        vidGrabber = ofVideoGrabber();
         vidGrabber.setDeviceID(id);
         vidGrabber.setDesiredFrameRate(framerate);
         vidGrabber.initGrabber(width, height);

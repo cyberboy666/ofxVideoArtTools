@@ -76,7 +76,9 @@ void conjur::setAltParams(vector<ofTexture> textures, float time){
 }
 
 void conjur::setSpeed(float value){
-    speed = -2.0 + 4.0*value;    
+    ofLog() << "shader speed value is: " << value;
+    speed = -2.0 + 4.0*value;
+    ofLog() << "shader speed set to: " << speed;
 }
 
 void conjur::setPlay(bool play){
