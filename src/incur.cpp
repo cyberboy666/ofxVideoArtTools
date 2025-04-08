@@ -5,6 +5,7 @@ void incur::setupThis(string mapPath){
     consoleListener.setup(this);
     lastAnalogReading = {0, 0, 0, 0, 0, 0, 0, 0};
     adcDelay = 0.1; 
+    adcGrain = 5;
     isAnalogListening = true;
     #else
     isAnalogListening = false;
@@ -206,7 +207,7 @@ vector<vector<string>> incur::readAnalogIn(){
             int a2dIndex = ofToInt(result["ANALOG"][i][0].asString());
             int value = a2d.getValueAllChannel(chip)[a2dIndex];
             //ofLog() << "value " << value;
-            if(value - lastAnalogReading[a2dIndex] < 5 && value - lastAnalogReading[a2dIndex] > -5 ){continue;}
+            if(value - lastAnalogReading[a2dIndex] < adcGrain && value - lastAnalogReading[a2dIndex] > -adcGrain ){continue;}
             lastAnalogReading[a2dIndex] = value;
             float normValue = (float)value / (float)1023;
             normValue = roundf(normValue * 100) / 100; 
