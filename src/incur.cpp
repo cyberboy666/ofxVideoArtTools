@@ -23,6 +23,20 @@ void incur::setupThis(string mapPath){
     bool parsingSuccessful = result.open(mapPath);
 }
 
+bool incur::connectKeyboard(int deviceNumber) {
+    std::string devicePath = "/dev/input/event" + std::to_string(deviceNumber);
+    fd = open(devicePath.c_str(), O_RDONLY | O_NONBLOCK);
+    if (fd == -1) {
+        ofLogError() << "Failed to open " << devicePath;
+        return false;
+    }
+
+    char name[256] = "Unknown";
+    ioctl(fd, EVIOCGNAME(sizeof(name)), name);
+    ofLogNotice() << "Connected to: " << devicePath << " Name: " << name;
+    return true;
+}
+
 bool incur::midiListening(bool ignoreCcOff){
     midiIn.listInPorts();
     if(midiIn.getNumInPorts() < 2){
@@ -175,6 +189,54 @@ void incur::onCharacterReceived(KeyListenerEventData& e){
 }
 
 #endif
+
+void incur::readKey(){
+    if (fd == -1) return;
+
+    int bytesRead = read(fd, ev, eventSize * 64);
+    if (bytesRead < eventSize) {
+        if (errno != EAGAIN && errno != EWOULDBLOCK) {
+            ofLogError() << "Keyboard read error, disconnecting";
+            close(fd);
+            fd = -1;
+        }
+        return;
+    }
+
+
+    for (int i = 0; i < bytesRead / eventSize; ++i) {
+        if (ev[i].type == EV_KEY) {
+            if (ev[i].code == KEY_LEFTSHIFT || ev[i].code == KEY_RIGHTSHIFT) {
+                shiftHeld = (ev[i].value != 0); // pressed or released
+            } else if (ev[i].code == KEY_CAPSLOCK && ev[i].value == 1) {
+                capsLockOn = !capsLockOn; // toggle on key down
+            } else if (ev[i].value == 1) { // key down event
+                int code = ev[i].code;
+                if (keyMap.count(code)) {
+                    bool isLetter = (code >= KEY_A && code <= KEY_Z);
+                    bool useShiftMap = shiftHeld ^ (capsLockOn && isLetter);
+                    int c = useShiftMap ? shiftMap[code] : keyMap[code];
+                    onKeyPress(c);
+                }
+            }
+        }
+    }
+/*
+    for (int i = 0; i < bytesRead / eventSize; ++i) {
+        if (ev[i].type == EV_KEY) {
+            if (ev[i].code == KEY_LEFTSHIFT || ev[i].code == KEY_RIGHTSHIFT) {
+                shiftHeld = (ev[i].value != 0); // pressed or released
+            } else if (ev[i].value == 1) { // key down event
+                int code = ev[i].code;
+                if (keyMap.count(code)) {
+                    char c = shiftHeld ? shiftMap[code] : keyMap[code];
+                    onKeyPress(c);
+                }
+            }
+        }
+    }
+*/
+}
 
 vector<vector<string>> incur::readAnalogIn(){
     vector<vector<string>> analogActions;
