@@ -26,6 +26,12 @@ class recur {
         void startSingle(string path);
         void updateSingle();
 
+        void setSpeed(float normalizedPot);
+        float currentSpeed;
+        int currentSpeedBucket;
+        bool speedPotActive;
+        float initialSpeedPotValue;
+
         void closeAll();
         string nowPlaying;
         string videoPath;
