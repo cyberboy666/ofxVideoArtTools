@@ -66,10 +66,8 @@ void recurVideoPlayer::setSpeedTo(float speedValue){
     #ifdef TARGET_RASPBERRY_PI
     float mappedSpeedValue =  DVD_PLAYSPEED_NORMAL * speed; // Map speed to OMX ranges (1x = 1000)
     
-    //int currentSpeed = omxPlayer.engine.currentSpeed; // Index number - current speed from omxPlayer.engine.speeds[]
-    //int currentValue = omxPlayer.engine.speeds[currentSpeed]; // Speed value - e.g. 0.5x * DVD_PLAYSPEED_NORMAL = 500
-    int leastIndexDiff = 9999; // fix init value - Least difference between speeds[] and mapped speed value
-    int bestIndexMatch = 0; // should this be null? - index of speeds[] closest to target
+    int leastIndexDiff = 9999; // Least difference between speeds[] and mapped speed value
+    int bestIndexMatch = 0; // index of speeds[] closest to target
     int speedChanges = 0;
     
     for(int i = 0; i < omxPlayer.engine.speeds.size(); i++) {
@@ -83,10 +81,11 @@ void recurVideoPlayer::setSpeedTo(float speedValue){
         }
 
     }
+    // We are already at the correct speed, nothing to do
     if(bestIndexMatch == omxPlayer.engine.currentSpeed) {
         return;
     }
-
+    // Change ofxOMXPlayer speed until it matches selected one
     if(bestIndexMatch > omxPlayer.engine.currentSpeed) {
         do {
             omxPlayer.increaseSpeed();
