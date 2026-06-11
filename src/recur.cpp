@@ -5,6 +5,11 @@ void recur::setup(string playerType){
     aPlayer.setup(playerType, "a");
     bPlayer.setup(playerType, "b");
 
+    currentSpeed = 1.0f;
+    currentSpeedBucket = 2;
+    speedPotActive = false;
+    initialSpeedPotValue = -1.0f;
+
     /*isLoopSeamless = true;
 
     if(isLoopSeamless == true){
@@ -71,6 +76,7 @@ void recur::updateSeamless(){
         if(aPlayer.status == "FINISHED" && bPlayer.status == "LOADED"){
             nowPlaying = "b";
             bPlayer.playPlayer();
+            bPlayer.setSpeedTo(currentSpeed);
             bPlayer.status = "PLAYING";
             aPlayer.loadPlayer(videoPath);
             aPlayer.status = "LOADING";
@@ -85,6 +91,7 @@ void recur::updateSeamless(){
         if(bPlayer.status == "FINISHED" && aPlayer.status == "LOADED"){
             nowPlaying = "a";
             aPlayer.playPlayer();
+            aPlayer.setSpeedTo(currentSpeed);
             aPlayer.status = "PLAYING";
             bPlayer.loadPlayer(videoPath);
             bPlayer.status = "LOADING";
@@ -106,6 +113,7 @@ void recur::updateSingle(){
 
     if(aPlayer.status == "LOADED"){
         aPlayer.playPlayer();
+        aPlayer.setSpeedTo(currentSpeed);
         aPlayer.status = "PLAYING";
     }
 
@@ -168,6 +176,63 @@ void recur::setPlay(bool play){
         if(play){bPlayer.playPlayer(); }
         else{bPlayer.pausePlayer(); }
     }
+}
+
+void recur::setSpeed(float normalizedPot) {
+
+    int rawBucket = (int)(normalizedPot * 5);
+
+    int speedBucket = ofClamp(rawBucket, 0, 4);
+
+    float speedMultipliers[5] = {0.25f, 0.5f, 1.0f, 2.0f, 4.0f};
+
+    float speed = speedMultipliers[speedBucket];
+
+    float speedBucketSize = 0.2;
+    // Amount of pot change before we actually change the speed, to avoid flapping on boundaries
+    float speedChangeMargin = 0.02;
+
+    // User hasn't used the speed pot yet after boot, keep speed at 1x default
+    if (speedPotActive == false)  {
+
+        if (initialSpeedPotValue < 0) {
+            initialSpeedPotValue = normalizedPot;
+            return;
+        }
+        
+        if (initialSpeedPotValue >= 0) {
+            float potDiff = abs(normalizedPot - initialSpeedPotValue);
+
+            // User moved the pot enough to activate (5%), now start reading it
+            if (potDiff > 0.05) {
+                speedPotActive = true;
+            }
+
+        } else {
+            return;
+        }
+        
+    }
+
+    if (speedBucket == this->currentSpeedBucket) {
+        return;
+    } else {
+        float potDriftLowBoundary = (currentSpeedBucket * speedBucketSize) - speedChangeMargin;
+
+        float potDriftHighBoundary = ((currentSpeedBucket + 1) * speedBucketSize) + speedChangeMargin;
+
+        // Pot change too small (< 2%) to change speed, keep the same speed
+        if (normalizedPot > potDriftLowBoundary && normalizedPot < potDriftHighBoundary) {
+            return;
+        }
+        
+        this->currentSpeedBucket = speedBucket;
+        this->currentSpeed = speed;
+
+        aPlayer.setSpeedTo(speed);
+        bPlayer.setSpeedTo(speed);
+    }
+
 }
 
 void recur::closeAll(){

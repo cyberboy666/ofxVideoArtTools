@@ -64,14 +64,47 @@ void recurVideoPlayer::setSpeedTo(float speedValue){
     else{speed = speedValue;}
     if(type == "ofxomxplayer"){
     #ifdef TARGET_RASPBERRY_PI
-    //omxPlayer.setSpeed(speed);
+    float mappedSpeedValue =  DVD_PLAYSPEED_NORMAL * speed; // Map speed to OMX ranges (1x = 1000)
+    
+    int leastIndexDiff = 9999; // Least difference between speeds[] and mapped speed value
+    int bestIndexMatch = 0; // index of speeds[] closest to target
+    int speedChanges = 0;
+    
+    for(int i = 0; i < omxPlayer.engine.speeds.size(); i++) {
+        int thisSpeed = omxPlayer.engine.speeds[i];
+
+        int speedDiff = abs(mappedSpeedValue - thisSpeed);
+
+        if (speedDiff < leastIndexDiff) {
+            bestIndexMatch = i;
+            leastIndexDiff = speedDiff;
+        }
+
+    }
+    // We are already at the correct speed, nothing to do
+    if(bestIndexMatch == omxPlayer.engine.currentSpeed) {
+        return;
+    }
+    // Change ofxOMXPlayer speed until it matches selected one
+    if(bestIndexMatch > omxPlayer.engine.currentSpeed) {
+        do {
+            omxPlayer.increaseSpeed();
+            speedChanges++;
+        } while (bestIndexMatch != omxPlayer.engine.currentSpeed && speedChanges <= omxPlayer.engine.speeds.size());
+    } else if(bestIndexMatch < omxPlayer.engine.currentSpeed) {
+        do {
+            omxPlayer.decreaseSpeed();
+            speedChanges++;
+        } while (bestIndexMatch != omxPlayer.engine.currentSpeed && speedChanges <= omxPlayer.engine.speeds.size());
+    }
+
     #endif
     }
     else{
     ofPlayer.setSpeed(speed);
     }
     
-    //ofLog(OF_LOG_NOTICE, "the player speed is " + ofToString(getSpeed()) + "but it should be " + ofToString(speed));   
+    ofLog(OF_LOG_NOTICE, "Changed video player speed to " + ofToString(speedValue) + "x")  ;
 }
 void recurVideoPlayer::close(){
     if(type == "ofxomxplayer"){
